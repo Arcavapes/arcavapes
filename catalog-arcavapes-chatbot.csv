@@ -1,0 +1,30 @@
+handle,title,description,category,image_url,variant_sku,option1_name,option1_value,option2_name,option2_value,price,currency,inventory,variant_image_url,is_active
+hookalit,Hookalit,,Vapes,https://arcavapes.com/assets/products/hookalit-blue-mist.png,hookalit-blue-mist,Sabor,Blue Mist,,,65000,COP,5,,TRUE
+hookalit,,,,,hookalit-gum-mint,Sabor,Gum Mint,,,65000,COP,3,,TRUE
+hookalit,,,,,hookalit-lucid-dream,Sabor,Lucid Dream,,,65000,COP,2,,TRUE
+hookalit,,,,,hookalit-magic-love,Sabor,Magic Love,,,65000,COP,5,,TRUE
+hookalit,,,,,hookalit-love-66,Sabor,Love 66,,,65000,COP,3,,TRUE
+hookalit,,,,,hookalit-lady-killer,Sabor,Lady Killer,,,65000,COP,0,,FALSE
+hookalit,,,,,hookalit-double-apple,Sabor,Double Apple,,,65000,COP,1,,TRUE
+hookalit-sorpresa,Hookalit Sorpresa,,Vapes,https://arcavapes.com/assets/products/sorpresahooka.png,hookalit-sorpresa,Sabor,Sorpresa,,,60000,COP,0,,FALSE
+upload,Upload,,Vapes,https://arcavapes.com/assets/products/upload-miami-mint.png,upload-miami-mint,Sabor,Miami Mint,,,55000,COP,1,,TRUE
+upload,,,,,upload-blue-razz-ice,Sabor,Blue Razz Ice,,,55000,COP,0,,FALSE
+upload-sorpresa,Upload Sorpresa,,Vapes,https://arcavapes.com/assets/products/sorpresaupload.png,upload-sorpresa,Sabor,Sorpresa,,,50000,COP,0,,FALSE
+humo-azul,Humo Azul,,Vapes,https://arcavapes.com/assets/products/clase-azul-strawberry-cranberry-cherry.png,humo-azul-strawberry-cranberry-cherry,Sabor,Strawberry Cranberry Cherry,,,65000,COP,0,,FALSE
+humo-azul,,,,,humo-azul-passion-fruit-kiwi-guava,Sabor,Passion Fruit Kiwi Guava,,,65000,COP,0,,FALSE
+humo-azul,,,,,humo-azul-blackberry-dragon-fruit,Sabor,Blackberry Dragon Fruit,,,65000,COP,0,,FALSE
+humo-azul,,,,,humo-azul-blueberry-ice,Sabor,Blueberry Ice,,,65000,COP,0,,FALSE
+humo-azul,,,,,humo-azul-grape-ice,Sabor,Grape Ice,,,65000,COP,0,,FALSE
+humo-azul,,,,,humo-azul-lemon-lime,Sabor,Lemon Lime,,,65000,COP,0,,FALSE
+humo-azul,,,,,humo-azul-strawberry-watermelon-grape,Sabor,Strawberry Watermelon Grape,,,65000,COP,0,,FALSE
+humo-azul,,,,,humo-azul-melon-ice,Sabor,Melon Ice,,,65000,COP,0,,FALSE
+wefume,WeFume,,Vapes,https://arcavapes.com/assets/products/clear.png,wefume-clear,Sabor,Clear,,,65000,COP,12,,TRUE
+wefume,,,,,wefume-mango-mint,Sabor,Mango Mint,,,65000,COP,3,,TRUE
+wefume,,,,,wefume-peach-banana,Sabor,Peach Banana,,,65000,COP,5,,TRUE
+wefume,,,,,wefume-dragon-fruit,Sabor,Dragon Fruit,,,65000,COP,0,,FALSE
+wefume,,,,,wefume-miami-mix,Sabor,Miami Mix,,,65000,COP,1,,TRUE
+wefume,,,,,wefume-cherry-black-ice,Sabor,Cherry Black Ice,,,65000,COP,6,,TRUE
+wefume-sorpresa,WeFume Sorpresa,,Vapes,https://arcavapes.com/assets/products/sorpresawefume.png,wefume-sorpresa,Sabor,Sorpresa,,,60000,COP,0,,FALSE
+nicky-jam,Nicky Jam,,Vapes,https://arcavapes.com/assets/products/bananapineapplenickyjam.png,nicky-jam-banana-pineapple,Sabor,Banana Pineapple,,,45000,COP,0,,FALSE
+crypto-vibe,Crypto Vibe,,Vapes,https://arcavapes.com/assets/products/crypto-blueberry-raspberry.png,crypto-vibe-blueberry-raspberry,Sabor,Blueberry Raspberry,,,65000,COP,20,,TRUE
+crypto-vibe,,,,,crypto-vibe-grape-ice,Sabor,Grape Ice,,,65000,COP,9,,TRUE

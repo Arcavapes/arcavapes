@@ -1,0 +1,3746 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arca Vapes — Más puffs, mismo precio</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="shortcut icon" href="favicon.png">
+  <link rel="apple-touch-icon" href="favicon.png">
+  <script src="https://checkout.bold.co/library/boldPaymentButton.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #080808;
+      --white: #ffffff;
+      --gray: #777777;
+      --card-bg: #111111;
+      --border: rgba(255,255,255,0.07);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; width: 100%;
+      z-index: 100;
+      padding: 1.2rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(8,8,8,0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-size: 1.1rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .nav-logo span { color: var(--gray); }
+    .nav-cta {
+      background: var(--white);
+      color: var(--bg);
+      padding: 0.55rem 1.4rem;
+      border-radius: 100px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-decoration: none;
+      transition: opacity .2s;
+    }
+    .nav-cta:hover { opacity: .8; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 8rem 2rem 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(255,255,255,0.04) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 100px;
+      padding: .35rem 1rem;
+      font-size: .75rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp .8s .2s forwards;
+    }
+    .hero h1 {
+      font-size: clamp(3.5rem, 10vw, 8rem);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: .95;
+      margin-bottom: 1.75rem;
+      opacity: 0;
+      animation: fadeUp .9s .4s forwards;
+    }
+    .hero h1 .sub {
+      display: block;
+      font-size: .28em;
+      font-weight: 400;
+      letter-spacing: .08em;
+      color: var(--gray);
+      margin-top: .6rem;
+      text-transform: uppercase;
+    }
+    .hero-slogan {
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      color: var(--gray);
+      line-height: 1.6;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp .9s .6s forwards;
+    }
+    .hero-slogan em { color: var(--white); font-style: normal; font-weight: 700; }
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      opacity: 0;
+      animation: fadeUp .9s .8s forwards;
+    }
+    .btn-primary {
+      background: var(--white);
+      color: var(--bg);
+      padding: .9rem 2.2rem;
+      border-radius: 100px;
+      font-weight: 700;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: transform .2s, opacity .2s;
+    }
+    .btn-primary:hover { transform: scale(1.03); opacity: .9; }
+    .btn-ghost {
+      background: transparent;
+      color: var(--white);
+      padding: .9rem 2.2rem;
+      border-radius: 100px;
+      font-weight: 600;
+      font-size: 1rem;
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.18);
+      transition: background .2s, border-color .2s;
+    }
+    .btn-ghost:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.4); }
+    .hero-gift {
+      margin-top: 2.5rem;
+      padding: .9rem 1.8rem;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: .9rem;
+      font-size: .9rem;
+      color: var(--gray);
+      opacity: 0;
+      animation: fadeUp .9s 1s forwards;
+    }
+    .hero-gift strong { color: var(--white); }
+    .scroll-hint {
+      margin-top: 2.6rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .3rem;
+      opacity: 0;
+      animation: fadeUp 1s 1.6s forwards;
+    }
+    .scroll-hint span {
+      font-size: .65rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--gray);
+    }
+    .scroll-line {
+      width: 2px;
+      height: 26px;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.75), rgba(255,255,255,0.08));
+      border-radius: 2px;
+    }
+    .scroll-arrow {
+      width: 9px;
+      height: 9px;
+      border-right: 2px solid rgba(255,255,255,0.8);
+      border-bottom: 2px solid rgba(255,255,255,0.8);
+      transform: rotate(45deg);
+      animation: scroll-bounce 1.8s ease-in-out infinite;
+    }
+    @keyframes scroll-bounce {
+      0%, 100% { transform: rotate(45deg) translate(-2px,-2px); opacity: .4; }
+      50%      { transform: rotate(45deg) translate(2px,2px);   opacity: 1; }
+    }
+    @keyframes pulse { 0%,100%{opacity:.35} 50%{opacity:1} }
+
+    /* ── GIFT STRIP ── */
+    .gift-strip {
+      background: var(--white);
+      color: var(--bg);
+      padding: 2rem 2rem;
+      text-align: center;
+    }
+    .gift-strip h2 {
+      font-size: clamp(1.2rem, 3vw, 1.8rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .gift-strip p {
+      margin-top: .35rem;
+      font-size: .9rem;
+      opacity: .55;
+    }
+
+    /* ── SECTIONS ── */
+    section { padding: 6rem 2rem; }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .sec-label {
+      font-size: .7rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: .9rem;
+    }
+    .sec-title {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+
+    /* ── PRODUCT LINE ── */
+    .product-line { margin-bottom: 4.5rem; }
+    .line-header {
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .line-name {
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .line-puffs {
+      font-size: .8rem;
+      color: var(--gray);
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+    .line-price {
+      margin-left: auto;
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+    /* ── PRODUCT GRID ── */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+      gap: 1rem;
+    }
+    .product-card {
+      background: var(--card-bg);
+      border-radius: 1rem;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      transition: transform .3s, box-shadow .3s, border-color .3s;
+      cursor: pointer;
+    }
+    .product-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 24px 48px rgba(0,0,0,0.6);
+      border-color: rgba(255,255,255,0.16);
+    }
+    @keyframes imgFadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    .product-card img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      display: block;
+      background: #ffffff;
+      opacity: 0;
+    }
+    .product-card img.img-loaded {
+      animation: imgFadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+    .card-info { padding: .8rem .9rem; }
+    .card-flavor { font-weight: 600; font-size: .88rem; margin-bottom: .2rem; }
+    .card-brand { font-size: .72rem; color: var(--gray); }
+    .card-desc { font-size: .7rem; color: var(--gray); line-height: 1.5; margin-top: .4rem; }
+    .card-stock { font-size: .62rem; color: var(--gray); margin-top: .5rem; text-transform: uppercase; letter-spacing: .08em; }
+    .card-stock.low { color: #f59e0b; font-weight: 700; }
+    .product-card.out-of-stock { display: none; }
+    .brand-desc { font-size: .88rem; color: var(--gray); line-height: 1.6; margin-top: .9rem; margin-bottom: 2rem; max-width: 720px; }
+    @media (max-width: 600px) {
+      .brand-desc { font-size: .8rem; margin-bottom: 1.4rem; }
+      .card-desc { font-size: .65rem; }
+      .card-stock { font-size: .58rem; }
+    }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials-bg { background: rgba(255,255,255,0.012); }
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: .9rem;
+      margin-top: 2.5rem;
+    }
+    .t-card {
+      background: rgba(255,255,255,0.025);
+      border-radius: 1rem;
+      padding: 1.6rem;
+      border: 1px solid var(--border);
+      transition: border-color .3s, background .3s;
+    }
+    .t-card:hover { border-color: rgba(255,255,255,0.14); background: rgba(255,255,255,0.035); }
+    .t-text {
+      font-size: .88rem;
+      line-height: 1.75;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 1rem;
+    }
+    .t-author { font-size: .7rem; color: var(--gray); font-weight: 600; letter-spacing: .05em; text-transform: uppercase; }
+
+    /* ── ORDER ── */
+    .order-section { text-align: center; }
+    .order-desc { color: var(--gray); max-width: 480px; margin: 0 auto 3rem; font-size: .95rem; line-height: 1.6; }
+    .channels {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+      max-width: 820px;
+      margin: 0 auto;
+    }
+    .ch-card {
+      background: rgba(255,255,255,0.025);
+      border-radius: 1.2rem;
+      padding: 2.2rem 1.5rem;
+      border: 1px solid var(--border);
+      text-decoration: none;
+      color: var(--white);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .75rem;
+      transition: transform .35s cubic-bezier(.16,1,.3,1), border-color .35s, background .35s;
+      position: relative; overflow: hidden;
+    }
+    .ch-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,255,255,0.05) 0%, transparent 100%);
+      opacity: 0; transition: opacity .4s;
+    }
+    .ch-card:hover::before { opacity: 1; }
+    .ch-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.04);
+    }
+    .ch-icon { font-size: 2rem; }
+    .ch-name { font-weight: 700; font-size: .95rem; letter-spacing: .04em; text-transform: uppercase; }
+    .ch-detail { font-size: .8rem; color: var(--gray); text-align: center; line-height: 1.65; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem;
+      text-align: center;
+      color: var(--gray);
+      font-size: .78rem;
+    }
+    .footer-brand {
+      display: block;
+      font-size: 1.1rem;
+      font-weight: 800;
+      letter-spacing: .12em;
+      color: var(--white);
+      margin-bottom: .6rem;
+    }
+
+    /* ── ALIADOS SECTION — esquema monocromático, sin púrpura ── */
+    .aliados-section {
+      background: #0d0d0d;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+    .aliados-inner {
+      max-width: 700px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    .aliados-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 100px;
+      padding: .35rem 1rem;
+      font-size: .72rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--gray);
+    }
+    .aliados-title {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+    }
+    .aliados-desc {
+      font-size: .95rem;
+      color: var(--gray);
+      line-height: 1.75;
+      max-width: 520px;
+    }
+    .aliados-desc strong { color: var(--white); }
+    .aliados-stats {
+      display: flex;
+      gap: 2.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 1.5rem 2rem;
+      background: rgba(255,255,255,0.025);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      width: 100%;
+    }
+    .aliados-stat-num {
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: var(--white);
+      letter-spacing: -0.04em;
+    }
+    .aliados-stat-label {
+      font-size: .68rem;
+      color: var(--gray);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-top: .2rem;
+    }
+    .btn-aliados {
+      background: var(--white);
+      color: var(--bg);
+      padding: .9rem 2.2rem;
+      border-radius: 100px;
+      font-weight: 700;
+      font-size: .95rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: .6rem;
+      transition: transform .2s, opacity .2s;
+      letter-spacing: .03em;
+    }
+    .btn-aliados:hover { transform: scale(1.03); opacity: .9; }
+
+    /* ── SCROLL ANIMATIONS ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(36px);
+      will-change: opacity, transform;
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); will-change: auto; }
+
+    /* ── KEYFRAMES ── */
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .products-grid { grid-template-columns: repeat(2, 1fr); }
+      .line-price { margin-left: 0; }
+    }
+
+    /* ── CART BUTTON (NAV) ── */
+    .cart-btn {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.18);
+      color: var(--white);
+      padding: 0.55rem 1.1rem;
+      border-radius: 100px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: .45rem;
+      transition: background .2s, border-color .2s;
+      position: relative;
+    }
+    .cart-btn:hover { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.4); }
+    .cart-badge {
+      background: var(--white);
+      color: var(--bg);
+      border-radius: 100px;
+      font-size: .68rem;
+      font-weight: 900;
+      min-width: 18px;
+      height: 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 4px;
+      display: none;
+    }
+    .cart-badge.show { display: inline-flex; }
+
+    /* ── ADD TO CART BUTTON on cards ── */
+    .card-add {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 .9rem .75rem;
+    }
+    .btn-add {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--white);
+      border-radius: 100px;
+      font-size: .72rem;
+      font-weight: 700;
+      padding: .35rem .9rem;
+      cursor: pointer;
+      transition: background .2s, border-color .2s, transform .15s;
+      letter-spacing: .03em;
+    }
+    .btn-add:hover { background: rgba(255,255,255,0.14); border-color: rgba(255,255,255,0.3); transform: scale(1.04); }
+    .btn-add.added { background: var(--white); color: var(--bg); border-color: var(--white); }
+
+    /* ── CART DRAWER ── */
+    .cart-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px);
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .3s;
+    }
+    .cart-overlay.open { opacity: 1; pointer-events: all; }
+    .cart-drawer {
+      position: fixed;
+      top: 0; right: 0;
+      height: 100%;
+      width: min(420px, 100vw);
+      background: #0f0f0f;
+      border-left: 1px solid var(--border);
+      z-index: 201;
+      display: flex;
+      flex-direction: column;
+      transform: translateX(100%);
+      transition: transform .35s cubic-bezier(.4,0,.2,1);
+    }
+    .cart-drawer.open { transform: translateX(0); }
+    .cart-header {
+      padding: 1.4rem 1.6rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .cart-title { font-weight: 800; font-size: 1.05rem; letter-spacing: .04em; text-transform: uppercase; }
+    .cart-close {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid var(--border);
+      color: var(--white);
+      width: 32px; height: 32px;
+      border-radius: 100px;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .2s;
+    }
+    .cart-close:hover { background: rgba(255,255,255,0.14); }
+    .cart-items {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.2rem 1.6rem;
+      display: flex;
+      flex-direction: column;
+      gap: .8rem;
+    }
+    .cart-empty {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: .9rem;
+      color: var(--gray);
+      font-size: .9rem;
+      padding: 2rem;
+      text-align: center;
+    }
+    .cart-empty-icon { font-size: 2.5rem; opacity: .4; }
+    .cart-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: .9rem;
+      padding: .9rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: .9rem;
+    }
+    .cart-item-img {
+      width: 52px; height: 52px;
+      border-radius: .5rem;
+      object-fit: cover;
+      background: #fff;
+      flex-shrink: 0;
+    }
+    .cart-item-img-placeholder {
+      width: 52px; height: 52px;
+      border-radius: .5rem;
+      background: rgba(255,255,255,0.06);
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+    }
+    .cart-item-info { flex: 1; min-width: 0; }
+    .cart-item-name { font-weight: 700; font-size: .83rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .cart-item-brand { font-size: .7rem; color: var(--gray); margin-top: .1rem; }
+    .cart-item-price { font-size: .8rem; font-weight: 700; margin-top: .3rem; }
+    .cart-item-controls,
+    .cart-item-qty {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: .45rem;
+      flex-shrink: 0;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: .25rem .5rem;
+    }
+    .qty-btn {
+      background: none;
+      border: none;
+      color: var(--white);
+      width: 22px; height: 22px;
+      border-radius: 100px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .15s;
+      line-height: 1;
+    }
+    .qty-btn:hover { background: rgba(255,255,255,0.14); }
+    .qty-num { font-size: .9rem; font-weight: 800; min-width: 18px; text-align: center; }
+    .cart-footer {
+      padding: 1.4rem 1.6rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: .9rem;
+    }
+    .cart-subtotal {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .cart-subtotal-label { font-size: .8rem; color: var(--gray); text-transform: uppercase; letter-spacing: .08em; }
+    .cart-subtotal-val { font-size: 1.3rem; font-weight: 900; }
+    .cart-gift-note {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: .7rem;
+      padding: .65rem 1rem;
+      font-size: .75rem;
+      color: var(--gray);
+      text-align: center;
+      line-height: 1.5;
+    }
+    .cart-gift-note strong { color: var(--white); }
+    .cart-footer .btn-checkout { width: 100%; }
+    .btn-checkout {
+      background: var(--white);
+      color: var(--bg);
+      padding: 1rem;
+      border-radius: 100px;
+      font-weight: 800;
+      font-size: .95rem;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      transition: transform .2s, opacity .2s;
+      text-decoration: none;
+    }
+    .btn-checkout:hover { transform: scale(1.02); opacity: .9; }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: #1a1a1a;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 100px;
+      padding: .65rem 1.4rem;
+      font-size: .82rem;
+      font-weight: 600;
+      color: var(--white);
+      z-index: 300;
+      opacity: 0;
+      transition: opacity .25s, transform .25s;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .btn-checkout-ghost {
+      background: transparent !important;
+      color: var(--white) !important;
+      border: 1px solid rgba(255,255,255,0.15) !important;
+    }
+    .btn-checkout-ghost:hover { background: rgba(255,255,255,0.06) !important; }
+
+    /* ── CHECKOUT MODAL ── */
+    .co-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(6px);
+      z-index: 300;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .3s;
+    }
+    .co-modal-overlay.open { opacity: 1; pointer-events: all; }
+    .co-modal {
+      background: #111;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 1.4rem;
+      width: 100%;
+      max-width: 460px;
+      max-height: 92vh;
+      overflow-y: auto;
+      padding: 1.6rem;
+      position: relative;
+      transform: scale(.96) translateY(12px);
+      transition: transform .3s;
+    }
+    .co-modal-overlay.open .co-modal { transform: scale(1) translateY(0); }
+    .co-modal-head {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-bottom: 1.4rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1.4rem;
+    }
+    .co-stepper { display: flex; align-items: center; gap: 0; }
+    .co-stepper-dot {
+      width: 28px; height: 28px;
+      border-radius: 100px;
+      border: 1.5px solid rgba(255,255,255,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .72rem; font-weight: 700;
+      color: var(--gray);
+      transition: all .3s;
+    }
+    .co-stepper-dot.current { border-color: var(--white); color: var(--white); background: rgba(255,255,255,0.08); }
+    .co-stepper-dot.done { border-color: var(--white); background: var(--white); color: var(--bg); }
+    .co-stepper-line { width: 36px; height: 1px; background: rgba(255,255,255,0.12); }
+
+    .co-step { display: none; flex-direction: column; }
+    .co-step.active { display: flex; }
+    .co-step-title { font-size: 1.2rem; font-weight: 800; letter-spacing: -.02em; margin-bottom: 1.2rem; }
+    .co-section-label { font-size: .65rem; letter-spacing: .15em; text-transform: uppercase; color: var(--gray); margin-bottom: .7rem; }
+
+    .co-fields { display: flex; flex-direction: column; gap: .6rem; }
+    .co-input {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: .7rem;
+      padding: .75rem 1rem;
+      color: var(--white);
+      font-size: .88rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color .2s;
+      width: 100%;
+    }
+    .co-input::placeholder { color: rgba(255,255,255,0.3); }
+    .co-input:focus { border-color: rgba(255,255,255,0.35); }
+
+    .co-pay-options { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; }
+    .pay-option {
+      background: rgba(255,255,255,0.03);
+      border: 1.5px solid rgba(255,255,255,0.1);
+      border-radius: .9rem;
+      padding: .9rem 1rem;
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+      display: flex; flex-direction: column; gap: .2rem;
+    }
+    .pay-option:hover { background: rgba(255,255,255,0.06); }
+    .pay-option.selected { border-color: var(--white); background: rgba(255,255,255,0.06); }
+    .pay-icon { font-size: 1.5rem; }
+    .pay-label { font-weight: 700; font-size: .88rem; }
+    .pay-sub { font-size: .72rem; color: var(--gray); }
+
+    .co-confirm-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 1.1rem 1.2rem;
+      display: flex; flex-direction: column; gap: .6rem;
+    }
+    .co-summary-row {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: .85rem;
+    }
+    .co-summary-gift { font-size: .82rem; color: var(--gray); }
+    .co-summary-divider { height: 1px; background: var(--border); margin: .3rem 0; }
+    .co-total-row { font-weight: 800; font-size: 1rem; }
+    .co-method-badge {
+      margin-top: .9rem;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: .7rem;
+      padding: .65rem 1rem;
+      font-size: .82rem;
+      font-weight: 600;
+      text-align: center;
+      color: var(--gray);
+    }
+
+    .co-success-icon {
+      width: 56px; height: 56px;
+      border-radius: 100px;
+      background: rgba(74,222,128,0.12);
+      border: 1.5px solid rgba(74,222,128,0.35);
+      color: #4ade80;
+      font-size: 1.5rem;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1.1rem;
+    }
+    .co-success-gift {
+      margin-top: 1rem;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: .7rem;
+      padding: .7rem 1rem;
+      font-size: .82rem;
+      color: var(--gray);
+      text-align: center;
+    }
+    .co-success-order {
+      margin-top: .7rem;
+      background: rgba(74,222,128,0.05);
+      border: 1px solid rgba(74,222,128,0.15);
+      border-radius: .7rem;
+      padding: .8rem 1rem;
+      font-size: .8rem;
+      color: var(--gray);
+      line-height: 1.6;
+    }
+    .co-detail-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      font-size: .82rem;
+      gap: 1rem;
+    }
+    .co-detail-row span:last-child { text-align: right; font-weight: 600; max-width: 60%; }
+    .co-cod-info {
+      display: flex;
+      align-items: flex-start;
+      gap: .8rem;
+      margin-top: 1rem;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: .9rem;
+      padding: 1rem 1.1rem;
+      font-size: .83rem;
+      color: var(--gray);
+      line-height: 1.6;
+    }
+    .co-cod-info strong { color: var(--white); }
+    .co-cod-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: .1rem; }
+    .co-card-soon {
+      margin-top: 1rem;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: .7rem;
+      padding: .75rem 1rem;
+      font-size: .82rem;
+      color: var(--gray);
+      text-align: center;
+    }
+    /* ── BOTÓN FLOTANTE WHATSAPP ── */
+    .wa-float {
+      position: fixed;
+      bottom: 1.6rem;
+      left: 1.6rem;
+      width: 48px;
+      height: 48px;
+      background: #25D366;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px rgba(37,211,102,0.4);
+      z-index: 999;
+      transition: transform .2s, box-shadow .2s;
+      animation: wa-pulse 2.5s infinite;
+    }
+    .wa-float:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 28px rgba(37,211,102,0.55);
+      animation: none;
+    }
+    .wa-float.wa-hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.85);
+    }
+    .wa-float svg {
+      width: 24px;
+      height: 24px;
+      fill: #fff;
+    }
+    @keyframes wa-pulse {
+      0%, 100% { box-shadow: 0 4px 20px rgba(37,211,102,0.4); }
+      50%       { box-shadow: 0 4px 28px rgba(37,211,102,0.7); }
+    }
+
+    /* ══════════════════════════════════════
+       DECORACIÓN SUTIL — solo blanco/negro
+    ══════════════════════════════════════ */
+
+    /* Brillo flotante en el hero */
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 20%; left: 50%;
+      transform: translateX(-50%);
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(255,255,255,0.025) 0%, transparent 60%);
+      filter: blur(40px);
+      pointer-events: none;
+      z-index: 0;
+      animation: float 8s ease-in-out infinite;
+    }
+    .hero > * { position: relative; z-index: 1; }
+    @keyframes float {
+      0%, 100% { transform: translate(-50%, 0); opacity: 0.6; }
+      50%       { transform: translate(-50%, -20px); opacity: 1; }
+    }
+
+    /* Línea decorativa bajo títulos de sección */
+    .sec-title { position: relative; }
+    .sec-title::after {
+      content: '';
+      display: block;
+      width: 0; height: 2px;
+      background: var(--white);
+      margin-top: 1.2rem;
+      transition: width .8s cubic-bezier(.34,1.2,.64,1) .2s;
+    }
+    .sec-title.visible::after { width: 80px; }
+
+    /* Brillo diagonal sutil en cards al hover */
+    .product-card { position: relative; }
+    .product-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 1rem;
+      background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 45%);
+      opacity: 0;
+      transition: opacity .4s ease;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .product-card:hover::after { opacity: 1; }
+
+    /* Pop animation cuando se agrega producto */
+    @keyframes pop-in {
+      0%   { transform: scale(.85); }
+      40%  { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+    .btn-add.added { animation: pop-in .4s ease forwards; }
+
+    /* Pulso suave en hero badge */
+    .hero-badge {
+      animation: fadeUp .8s .2s forwards, badge-glow 4s ease-in-out infinite 2s;
+    }
+    @keyframes badge-glow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); }
+      50%       { box-shadow: 0 0 0 5px rgba(255,255,255,0.035); }
+    }
+
+    /* Bounce en el cart badge cuando cambia */
+    @keyframes badge-bounce {
+      0%   { transform: scale(.6); }
+      50%  { transform: scale(1.25); }
+      100% { transform: scale(1); }
+    }
+    .cart-badge.bump { animation: badge-bounce .4s ease; }
+
+    /* Estrellas decorativas en gift-strip (solo desktop) */
+    .gift-strip { position: relative; overflow: hidden; }
+    .gift-strip::before, .gift-strip::after {
+      content: '✦';
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(8,8,8,0.18);
+      font-size: 1.4rem;
+    }
+    .gift-strip::before { left: 2.5rem; }
+    .gift-strip::after  { right: 2.5rem; }
+
+    /* Línea decorativa en line-header */
+    .line-header { position: relative; }
+    .line-header::after {
+      content: '';
+      position: absolute;
+      bottom: -1px; left: 0;
+      width: 0; height: 1px;
+      background: var(--white);
+      opacity: .8;
+      transition: width 1s ease .3s;
+    }
+    .product-line.visible .line-header::after { width: 40px; }
+
+    /* Destello horizontal en hover de ch-card */
+    .ch-card { position: relative; overflow: hidden; }
+    .ch-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      transform: translateX(-100%);
+      transition: transform .7s ease;
+    }
+    .ch-card:hover::before { transform: translateX(100%); }
+
+    /* Logo nav hover sutil */
+    .nav-logo { transition: opacity .2s; }
+    .nav-logo:hover { opacity: .85; }
+
+    /* ══════════════════════════════════════
+       AGE GATE — mismo estilo del hero
+    ══════════════════════════════════════ */
+    #age-gate {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      overflow: hidden;
+      transition: opacity .5s ease, visibility .5s ease;
+    }
+    #age-gate.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    #age-gate::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(255,255,255,0.04) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .ag-inner {
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .ag-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 100px;
+      padding: .35rem 1rem;
+      font-size: .75rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp .8s .15s forwards;
+    }
+    .ag-number {
+      font-size: clamp(5rem, 18vw, 8rem);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: .9;
+      margin-bottom: 1.4rem;
+      color: var(--white);
+      opacity: 0;
+      animation: fadeUp .9s .35s forwards;
+    }
+    .ag-number .plus {
+      font-size: .55em;
+      vertical-align: top;
+      font-weight: 800;
+      opacity: .6;
+      margin-right: .05em;
+    }
+    .ag-title {
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      color: var(--gray);
+      line-height: 1.6;
+      margin-bottom: 2.2rem;
+      opacity: 0;
+      animation: fadeUp .9s .55s forwards;
+    }
+    .ag-title strong {
+      color: var(--white);
+      font-weight: 700;
+    }
+    .ag-btns {
+      display: flex;
+      flex-direction: column;
+      gap: .75rem;
+      width: 100%;
+      max-width: 320px;
+      opacity: 0;
+      animation: fadeUp .9s .75s forwards;
+    }
+    .ag-yes {
+      background: var(--white);
+      color: var(--bg);
+      padding: .9rem 2.2rem;
+      border-radius: 100px;
+      font-weight: 700;
+      font-size: 1rem;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      transition: transform .2s, opacity .2s;
+      letter-spacing: .01em;
+    }
+    .ag-yes:hover { transform: scale(1.03); opacity: .9; }
+    .ag-yes:active { transform: scale(.97); }
+    .ag-no {
+      background: transparent;
+      color: var(--gray);
+      padding: .85rem 2.2rem;
+      border-radius: 100px;
+      font-weight: 600;
+      font-size: .95rem;
+      border: 1px solid rgba(255,255,255,0.18);
+      cursor: pointer;
+      font-family: inherit;
+      transition: background .2s, border-color .2s, color .2s;
+    }
+    .ag-no:hover {
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(255,255,255,0.4);
+      color: var(--white);
+    }
+    .ag-legal {
+      margin-top: 1.6rem;
+      font-size: .68rem;
+      color: rgba(255,255,255,0.22);
+      line-height: 1.6;
+      letter-spacing: .02em;
+      opacity: 0;
+      animation: fadeUp .9s .95s forwards;
+    }
+
+    /* ══════════════════════════════════════
+       BARRA CARRITO FLOTANTE
+    ══════════════════════════════════════ */
+    #sticky-cart {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 150;
+      transform: translateY(120%);
+      will-change: transform;
+      transition: transform .45s cubic-bezier(.34,1.4,.64,1);
+      padding: 0 .8rem .8rem;
+      pointer-events: none;
+    }
+    #sticky-cart.visible {
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    .sc-inner {
+      max-width: 480px;
+      margin: 0 auto;
+      background: var(--white);
+      color: var(--bg);
+      border-radius: 1rem;
+      padding: .8rem 1rem .8rem 1.3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: .8rem;
+      box-shadow: 0 12px 40px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.04);
+    }
+    .sc-info { flex: 1; min-width: 0; }
+    .sc-count {
+      font-size: .6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      opacity: .55;
+    }
+    .sc-total {
+      font-size: 1.25rem;
+      font-weight: 900;
+      letter-spacing: -.02em;
+      line-height: 1.1;
+    }
+    .sc-gift {
+      font-size: .65rem;
+      opacity: .55;
+      margin-top: 1px;
+    }
+    .sc-btn {
+      background: var(--bg);
+      color: var(--white);
+      border: none;
+      border-radius: 100px;
+      padding: .7rem 1.3rem;
+      font-size: .82rem;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+      font-family: inherit;
+      transition: opacity .2s, transform .15s;
+      flex-shrink: 0;
+      letter-spacing: .01em;
+    }
+    .sc-btn:hover { opacity: .85; }
+    .sc-btn:active { transform: scale(.95); }
+    #sticky-cart.visible ~ .wa-float { bottom: 6rem; left: 1.6rem; }
+    @keyframes scBump {
+      0%   { transform: scale(1); }
+      40%  { transform: scale(1.035); }
+      70%  { transform: scale(.98); }
+      100% { transform: scale(1); }
+    }
+    .sc-inner.bump { animation: scBump .38s cubic-bezier(.34,1.5,.64,1); }
+
+    /* ══════════════════════════════════════
+       FOOTER LEGAL
+    ══════════════════════════════════════ */
+    .footer-legal {
+      margin: 1.4rem auto 0;
+      padding: .9rem 1.2rem;
+      background: rgba(255,255,255,0.025);
+      border: 1px solid var(--border);
+      border-radius: .8rem;
+      font-size: .68rem;
+      color: rgba(255,255,255,0.25);
+      line-height: 1.7;
+      max-width: 600px;
+      letter-spacing: .01em;
+    }
+    .footer-legal strong { color: rgba(255,255,255,0.4); font-weight: 700; }
+
+    /* ══════════════════════════════════════
+       RESPONSIVE — hibrido pc/mobile
+    ══════════════════════════════════════ */
+    @media (max-width: 600px) {
+      .gift-strip::before, .gift-strip::after { display: none; }
+      body.has-cart { padding-bottom: 5.5rem; }
+      nav { padding: 1rem 1.2rem; }
+      section { padding: 4rem 1.2rem; }
+
+      /* Hero — corregido para móvil */
+      .hero {
+        padding: 8rem 1.2rem 5rem !important;
+        align-items: flex-start !important;
+        text-align: left !important;
+        min-height: 100svh;
+      }
+      .hero h1 { font-size: clamp(3rem, 14vw, 4.8rem) !important; margin-bottom: 1rem !important; }
+      .hero-slogan { font-size: .92rem !important; margin-bottom: 1.8rem !important; }
+      .hero-badge { font-size: .68rem !important; padding: .28rem .85rem !important; }
+      .hero-gift { padding: .75rem 1.1rem !important; font-size: .8rem !important; max-width: 100% !important; }
+      .hero-actions { flex-direction: column; align-items: stretch; gap: .65rem; width: 100%; }
+      .btn-primary, .btn-ghost { text-align: center; padding: .85rem 1.4rem !important; font-size: .9rem !important; }
+
+      /* Stats */
+      .sstat-n { font-size: clamp(1.6rem, 8vw, 2.4rem) !important; }
+      .sstat { padding: 1.4rem 1rem !important; }
+
+      /* Product grid */
+      .product-line { margin-bottom: 3rem; }
+      .ag-btns { max-width: 100%; }
+
+      /* Aliados */
+      .aliados-title { font-size: clamp(1.6rem, 8vw, 2.4rem) !important; }
+      .aliados-stats { gap: 1rem !important; padding: 1.2rem 1.2rem !important; }
+      .aliados-stat-num { font-size: 1.3rem !important; }
+
+      /* Botones nav compactos */
+      .nav-logo { font-size: .92rem; letter-spacing: .07em; }
+      .nav-cta { padding: .4rem .85rem; font-size: .72rem; }
+      .cart-btn { padding: .4rem .7rem; font-size: .72rem; }
+      .cart-btn .cart-badge { min-width: 16px; height: 16px; font-size: .62rem; }
+      .btn-add { padding: .3rem .65rem; font-size: .64rem; }
+      .card-add { padding: 0 .6rem .7rem; }
+      .card-add span { font-size: .68rem !important; }
+
+      /* Checkout modal — más compacto */
+      .co-modal {
+        padding: 1.2rem !important;
+        border-radius: 1.2rem !important;
+        max-height: 90svh !important;
+      }
+      .co-step-title { font-size: 1.05rem !important; margin-bottom: 1rem !important; }
+      .co-pay-options { grid-template-columns: 1fr !important; gap: .5rem !important; }
+      .pay-option { padding: .8rem .9rem !important; }
+      .co-modal-head { padding-bottom: 1rem !important; margin-bottom: 1rem !important; }
+
+      /* Sticky cart */
+      .sc-inner { padding: .8rem .85rem .8rem 1.1rem !important; }
+      .sc-total { font-size: 1.1rem !important; }
+      .sc-btn { padding: .65rem 1.1rem !important; font-size: .76rem !important; }
+      .sc-gift { display: none; }
+    }
+    @media (min-width: 601px) {
+      #sticky-cart {
+        max-width: 500px;
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%) translateY(140%);
+        padding: 0 0 1.4rem;
+      }
+      #sticky-cart.visible {
+        transform: translateX(-50%) translateY(0);
+      }
+    }
+
+    /* ══════════════════════════════════════
+       PREMIUM LAYER — partículas, cursor, parallax
+    ══════════════════════════════════════ */
+
+    /* Canvas de partículas */
+    #cv-particles {
+      position: fixed; inset: 0; z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Cursor personalizado — solo desktop */
+    @media (hover: hover) and (pointer: fine) {
+      body { cursor: none; }
+      #cur-dot {
+        position: fixed; z-index: 9999;
+        width: 5px; height: 5px;
+        background: #fff; border-radius: 50%;
+        pointer-events: none;
+        transform: translate(-50%,-50%);
+        top: 0; left: 0;
+      }
+      #cur-ring {
+        position: fixed; z-index: 9998;
+        width: 32px; height: 32px;
+        border: 1px solid rgba(255,255,255,0.4);
+        border-radius: 50%;
+        pointer-events: none;
+        transform: translate(-50%,-50%);
+        top: 0; left: 0;
+        transition: width .25s, height .25s, border-color .25s, opacity .25s;
+      }
+      #cur-ring.big { width: 50px; height: 50px; border-color: rgba(255,255,255,0.7); }
+      #cur-ring.away { opacity: 0; }
+    }
+
+    /* Z-index para que el contenido quede sobre el canvas */
+    nav, .hero, .gift-strip, #productos, .order-section,
+    .testimonials-bg, .aliados-section, footer,
+    .mq-strip, .stats-strip, section { position: relative; z-index: 1; }
+
+    /* Hero: left-aligned, tipografía más grande */
+    .hero {
+      align-items: flex-start !important;
+      text-align: left !important;
+      padding: 0 3rem !important;
+      justify-content: center !important;
+    }
+    .hero h1 {
+      font-size: clamp(5rem, 14vw, 11rem) !important;
+      letter-spacing: -0.055em !important;
+      line-height: 0.88 !important;
+      margin-bottom: 1.5rem !important;
+      overflow: hidden;
+    }
+    /* Word-slide para las líneas del hero */
+    .hero-line { display: block; overflow: hidden; }
+    .hero-word {
+      display: inline-block;
+      opacity: 0; transform: translateY(105%);
+      animation: wordSlide .9s cubic-bezier(.16,1,.3,1) forwards;
+    }
+    .hero-word-1 { animation-delay: .3s; }
+    .hero-word-2 { animation-delay: .46s; color: rgba(255,255,255,0.16); }
+    @keyframes wordSlide {
+      from { opacity: 0; transform: translateY(105%); }
+      to   { opacity: 1; transform: none; }
+    }
+    .hero-badge { animation: fadeUp .9s .15s forwards !important; }
+    .hero-slogan { animation: fadeUp .9s .7s forwards !important; }
+    .hero-actions { animation: fadeUp .9s .85s forwards !important; }
+    .hero-gift { animation: fadeUp .9s 1s forwards !important; }
+    .hero-gift {
+      max-width: 480px;
+      border-radius: .75rem !important;
+    }
+    /* Indicador scroll */
+    .hero-scroll-bar {
+      position: absolute; bottom: 2.5rem; left: 3rem;
+      display: flex; align-items: center; gap: .7rem;
+      font-size: .58rem; letter-spacing: .2em; text-transform: uppercase;
+      color: rgba(255,255,255,.22);
+      opacity: 0; animation: fadeUp 1s 1.4s forwards;
+    }
+    .hsb-line {
+      width: 26px; height: 1px; background: rgba(255,255,255,.15);
+      position: relative; overflow: hidden;
+    }
+    .hsb-line::after {
+      content: ''; position: absolute; inset-y: 0; left: -100%; width: 100%;
+      background: rgba(255,255,255,.75);
+      animation: hsbAnim 2.2s 1.6s infinite;
+    }
+    @keyframes hsbAnim { 0%{left:-100%} 100%{left:100%} }
+
+    /* Número grande hero (fondo derecha) */
+    .hero-big-num {
+      position: absolute; right: 3rem; bottom: 2.2rem; text-align: right;
+      opacity: 0; animation: fadeUp 1s 1.2s forwards;
+      pointer-events: none;
+    }
+    .hbn-num {
+      font-size: 3.2rem; font-weight: 800; letter-spacing: -.05em;
+      color: rgba(255,255,255,.07); line-height: 1;
+    }
+    .hbn-lab {
+      font-size: .55rem; letter-spacing: .16em; text-transform: uppercase;
+      color: rgba(255,255,255,.14);
+    }
+
+    /* ── MARQUEE STRIP ── */
+    .mq-strip {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+      background: rgba(255,255,255,0.012);
+    }
+    .mq-track {
+      display: flex; width: max-content;
+      animation: mqScroll 26s linear infinite;
+      padding: .9rem 0;
+    }
+    .mq-track:hover { animation-play-state: paused; }
+    .mq-item {
+      display: flex; align-items: center; gap: 2rem;
+      font-size: .6rem; letter-spacing: .18em; text-transform: uppercase;
+      color: rgba(255,255,255,.38); white-space: nowrap; padding: 0 2rem;
+    }
+    .mq-sep { width: 3px; height: 3px; border-radius: 50%; background: rgba(255,255,255,.2); flex-shrink: 0; }
+    @keyframes mqScroll { to { transform: translateX(-50%); } }
+
+    /* ── STATS STRIP ── */
+    .stats-strip {
+      border-bottom: 1px solid var(--border);
+    }
+    .stats-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(4,1fr);
+    }
+    .sstat {
+      padding: 2.8rem 2.5rem;
+      border-right: 1px solid var(--border);
+    }
+    .sstat:last-child { border-right: none; }
+    .sstat-n {
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 800; letter-spacing: -.04em; line-height: 1;
+      margin-bottom: .5rem;
+    }
+    .sstat-l {
+      font-size: .63rem; color: var(--gray);
+      letter-spacing: .07em; text-transform: uppercase; line-height: 1.5;
+    }
+
+    /* El age gate restaura el cursor nativo — el custom cursor queda detrás */
+    #age-gate, #age-gate * { cursor: auto !important; }
+
+    /* Product cards: glow radial en hover — transform lo maneja JS tilt */
+    .product-card {
+      position: relative;
+      transition: box-shadow .35s, border-color .35s !important;
+    }
+    .product-card::after {
+      content: '';
+      position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+      background: radial-gradient(ellipse 80% 70% at var(--cx,50%) var(--cy,50%),
+                  rgba(255,255,255,0.06) 0%, transparent 100%);
+      opacity: 0; transition: opacity .4s;
+    }
+    .product-card:hover::after { opacity: 1; }
+    .product-card:hover {
+      box-shadow: 0 28px 56px rgba(0,0,0,0.65) !important;
+      border-color: rgba(255,255,255,0.18) !important;
+    }
+
+    /* Gift strip — más premium */
+    .gift-strip {
+      background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%) !important;
+      color: var(--white) !important;
+      border-top: 1px solid rgba(255,255,255,0.1) !important;
+      border-bottom: 1px solid rgba(255,255,255,0.1) !important;
+      padding: 2.5rem 3rem !important;
+    }
+    .gift-strip h2 {
+      color: var(--white) !important;
+      font-size: clamp(1.1rem, 2.5vw, 1.6rem) !important;
+      letter-spacing: -.02em !important;
+    }
+    .gift-strip p { opacity: .45 !important; font-size: .82rem !important; }
+
+    /* Mejorar reveal */
+    .reveal {
+      transition: opacity .85s cubic-bezier(.16,1,.3,1), transform .85s cubic-bezier(.16,1,.3,1) !important;
+    }
+
+    /* ════════════════════════════════════════════
+       CHECKOUT + CART — REDISEÑO PREMIUM
+    ════════════════════════════════════════════ */
+
+    /* Sticky cart — pill refinado */
+    .sc-inner {
+      border-radius: 1.2rem !important;
+      box-shadow: 0 16px 56px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,255,255,0.05) !important;
+      padding: .95rem 1rem .95rem 1.5rem !important;
+    }
+    .sc-count {
+      font-size: .58rem !important;
+      letter-spacing: .16em !important;
+    }
+    .sc-total {
+      font-size: 1.3rem !important;
+      letter-spacing: -.03em !important;
+    }
+    .sc-gift { font-size: .62rem !important; }
+    .sc-btn {
+      border-radius: .8rem !important;
+      padding: .75rem 1.5rem !important;
+      font-size: .8rem !important;
+      font-weight: 800 !important;
+      letter-spacing: .04em !important;
+    }
+
+    /* Cart drawer — más editorial */
+    .cart-drawer { background: #0d0d0d !important; }
+    .cart-title {
+      font-size: .78rem !important;
+      letter-spacing: .2em !important;
+    }
+    .cart-item {
+      background: rgba(255,255,255,0.028) !important;
+      border-radius: 1rem !important;
+      transition: border-color .2s, background .2s;
+    }
+    .cart-item:hover { border-color: rgba(255,255,255,0.14) !important; background: rgba(255,255,255,0.04) !important; }
+    .cart-item-name { font-size: .85rem !important; }
+    .cart-subtotal-val { font-size: 1.5rem !important; letter-spacing: -.03em !important; }
+    .cart-gift-note {
+      border-radius: .9rem !important;
+      font-size: .72rem !important;
+      padding: .8rem 1.1rem !important;
+    }
+    .btn-checkout {
+      border-radius: .85rem !important;
+      font-size: .82rem !important;
+      letter-spacing: .08em !important;
+      text-transform: uppercase !important;
+      padding: 1.1rem !important;
+      transition: opacity .2s, transform .15s !important;
+    }
+    .btn-checkout:hover { opacity: .88; transform: scale(1.01); }
+
+    /* Checkout modal — inputs y estructura */
+    .co-modal {
+      background: #0d0d0d !important;
+      border-color: rgba(255,255,255,0.08) !important;
+      border-radius: 1.6rem !important;
+      padding: 2rem !important;
+      max-width: 480px !important;
+    }
+    .co-modal-overlay.open .co-modal {
+      transform: scale(1) translateY(0) !important;
+    }
+    .co-step-title {
+      font-size: 1.35rem !important;
+      letter-spacing: -.035em !important;
+      margin-bottom: 1.5rem !important;
+    }
+    .co-section-label {
+      font-size: .6rem !important;
+      letter-spacing: .2em !important;
+    }
+    .co-input {
+      background: rgba(255,255,255,0.03) !important;
+      border-radius: .9rem !important;
+      padding: .9rem 1.1rem !important;
+      font-size: .9rem !important;
+      border-color: rgba(255,255,255,0.08) !important;
+      transition: border-color .25s, background .25s !important;
+    }
+    .co-input:focus {
+      border-color: rgba(255,255,255,0.32) !important;
+      background: rgba(255,255,255,0.05) !important;
+    }
+    .co-input::placeholder { color: rgba(255,255,255,0.22) !important; }
+
+    /* Stepper — más editorial */
+    .co-stepper-dot {
+      width: 26px !important; height: 26px !important;
+      font-size: .65rem !important;
+      border-color: rgba(255,255,255,0.14) !important;
+    }
+    .co-stepper-dot.current {
+      border-color: rgba(255,255,255,0.7) !important;
+      background: rgba(255,255,255,0.06) !important;
+    }
+    .co-stepper-dot.done {
+      background: var(--white) !important;
+      border-color: var(--white) !important;
+    }
+    .co-stepper-line { width: 32px !important; background: rgba(255,255,255,0.08) !important; }
+
+    /* Opciones de pago */
+    .pay-option {
+      border-radius: 1rem !important;
+      padding: 1rem 1.1rem !important;
+      border-color: rgba(255,255,255,0.07) !important;
+    }
+    .pay-option.selected {
+      border-color: rgba(255,255,255,0.6) !important;
+      background: rgba(255,255,255,0.05) !important;
+    }
+    .pay-label { font-size: .85rem !important; letter-spacing: .02em !important; }
+
+    /* Resumen de pedido */
+    .co-confirm-box {
+      background: rgba(255,255,255,0.025) !important;
+      border-radius: 1.1rem !important;
+      border-color: rgba(255,255,255,0.07) !important;
+    }
+    .co-total-row { font-size: 1.1rem !important; letter-spacing: -.02em !important; }
+    .co-method-badge {
+      border-radius: .85rem !important;
+      font-size: .78rem !important;
+      letter-spacing: .04em !important;
+    }
+
+    /* Pantalla de éxito — monochrome, sin verde */
+    .co-success-icon {
+      background: rgba(255,255,255,0.06) !important;
+      border: 1.5px solid rgba(255,255,255,0.2) !important;
+      color: var(--white) !important;
+      width: 60px !important; height: 60px !important;
+      font-size: 1.6rem !important;
+    }
+    .co-success-gift {
+      background: rgba(255,255,255,0.03) !important;
+      border-color: rgba(255,255,255,0.08) !important;
+      border-radius: .9rem !important;
+      font-size: .8rem !important;
+    }
+    .co-success-order {
+      background: rgba(255,255,255,0.03) !important;
+      border-color: rgba(255,255,255,0.08) !important;
+      border-radius: .9rem !important;
+      color: rgba(255,255,255,0.55) !important;
+    }
+
+    /* Botón continuar / cerrar en éxito */
+    #coSuccessBtn {
+      background: var(--white) !important;
+      color: var(--bg) !important;
+      border-radius: .85rem !important;
+      font-size: .82rem !important;
+      letter-spacing: .08em !important;
+      text-transform: uppercase !important;
+    }
+
+    /* ══════════════════════════════════════
+       OPTIMIZACIÓN MÓVIL — reducir carga GPU
+    ══════════════════════════════════════ */
+    @media (max-width: 768px) {
+      /* Hero — ajuste tablet/móvil */
+      .hero {
+        padding: 0 1.5rem !important;
+        justify-content: center !important;
+      }
+      .hero h1 { font-size: clamp(3.5rem, 12.5vw, 6rem) !important; }
+      /* Ocultar elementos decorativos absolutos que chocan en móvil */
+      .hero-big-num { display: none !important; }
+      .hero-scroll-bar { display: none !important; }
+
+      /* Stats grid — 2 columnas */
+      .stats-inner { grid-template-columns: 1fr 1fr; }
+      .sstat { padding: 1.8rem 1.5rem; border-bottom: 1px solid var(--border); }
+      .sstat:nth-child(even) { border-right: none; }
+      .sstat:nth-last-child(-n+2) { border-bottom: none; }
+
+      /* Marquee — oculto en móvil (ahorro rendimiento) */
+      .mq-strip { display: none; }
+
+      /* Gift strip */
+      .gift-strip { padding: 2rem 1.5rem !important; }
+
+      /* Checkout modal — padding más cómodo en tablet */
+      .co-modal {
+        padding: 1.5rem !important;
+        border-radius: 1.3rem !important;
+        max-width: 100% !important;
+      }
+      .co-modal-overlay { padding: .75rem !important; }
+
+      /* Aliados */
+      .aliados-stats { gap: 1.5rem !important; }
+
+      /* Nav sin blur (rendimiento) */
+      nav {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        background: rgba(8,8,8,0.97);
+      }
+      /* Cart overlay sin blur */
+      .cart-overlay {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        background: rgba(0,0,0,0.75);
+      }
+      /* Checkout modal overlay sin blur */
+      .co-modal-overlay {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        background: rgba(0,0,0,0.85);
+      }
+
+      /* WA sin pulso animado (ahorro batería) */
+      .wa-float { animation: none; }
+
+      /* Cards sin transición 3D en móvil */
+      .product-card { transition: none; }
+
+      /* Orbe decorativo — oculto */
+      .hero-orb { display: none; }
+    }
+
+    /* ══════════════════════════════════════
+       MODAL DETALLE DE PRODUCTO
+    ══════════════════════════════════════ */
+    .pd-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      background: rgba(0,0,0,0.82);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s cubic-bezier(0.4,0,0.2,1);
+    }
+    .pd-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .pd-modal {
+      background: #111111;
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 20px;
+      max-width: 860px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+      transform: scale(0.94) translateY(16px);
+      transition: transform 0.38s cubic-bezier(0.4,0,0.2,1);
+      scrollbar-width: none;
+    }
+    .pd-modal::-webkit-scrollbar { display: none; }
+    .pd-overlay.open .pd-modal {
+      transform: scale(1) translateY(0);
+    }
+    .pd-img-wrap {
+      position: relative;
+      background: #ffffff;
+      border-radius: 20px 0 0 20px;
+      overflow: hidden;
+      min-height: 340px;
+    }
+    .pd-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      padding: 1rem;
+    }
+    .pd-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(8,8,8,0.7);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #fff;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10;
+      transition: background 0.2s, transform 0.2s;
+      line-height: 1;
+    }
+    .pd-close:hover { background: rgba(255,255,255,0.12); transform: scale(1.08); }
+    .pd-info {
+      padding: 2.2rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .pd-brand-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 100px;
+      padding: .28rem .9rem;
+      font-size: .7rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      width: fit-content;
+    }
+    .pd-flavor {
+      font-size: 1.65rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+    }
+    .pd-specs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .5rem;
+    }
+    .pd-spec {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 10px;
+      padding: .65rem .8rem;
+    }
+    .pd-spec-label {
+      font-size: .62rem;
+      color: var(--gray);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: .2rem;
+    }
+    .pd-spec-value {
+      font-size: .88rem;
+      font-weight: 700;
+    }
+    .pd-desc {
+      font-size: .84rem;
+      color: rgba(255,255,255,0.62);
+      line-height: 1.65;
+    }
+    .pd-features {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .4rem;
+    }
+    .pd-feat-tag {
+      font-size: .68rem;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 6px;
+      padding: .22rem .65rem;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: .04em;
+    }
+    .pd-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: auto;
+      padding-top: .8rem;
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+    .pd-price {
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .pd-add-btn {
+      background: var(--white);
+      color: var(--bg);
+      border: none;
+      border-radius: 100px;
+      padding: .7rem 1.6rem;
+      font-weight: 700;
+      font-size: .88rem;
+      cursor: pointer;
+      transition: opacity .2s, transform .15s;
+    }
+    .pd-add-btn:hover { opacity: .85; transform: scale(1.03); }
+    .pd-add-btn:active { transform: scale(0.97); }
+    .pd-stock-badge {
+      font-size: .65rem;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--gray);
+    }
+    .pd-stock-badge.low { color: #f59e0b; font-weight: 700; }
+    @media (max-width: 640px) {
+      .pd-modal {
+        grid-template-columns: 1fr;
+        max-height: 88vh;
+      }
+      .pd-img-wrap {
+        border-radius: 20px 20px 0 0;
+        min-height: 220px;
+        max-height: 260px;
+      }
+      .pd-info { padding: 1.5rem 1.25rem; }
+      .pd-flavor { font-size: 1.3rem; }
+      .pd-price { font-size: 1.25rem; }
+    }
+    @media (max-width: 768px) {
+      .pd-overlay {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        background: rgba(0,0,0,0.88);
+      }
+    }
+
+    /* Cursor pointer en tarjeta de producto (cuerpo) */
+    .product-card { cursor: pointer; }
+
+    /* ══════════════════════════════════════
+       FIX iOS / iPhone — subpixel & stacking
+    ══════════════════════════════════════ */
+
+    /* Forzar compositing en Safari para que border-radius + overflow no "monte" elementos */
+    /* NOTA: cart-drawer excluido intencionalmente — usa translateX para slide in/out */
+    .product-card,
+    .pd-modal,
+    .co-modal,
+    .sc-inner,
+    .ch-card,
+    .t-card {
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
+    }
+
+    /* Safari necesita -webkit-backdrop-filter explícito cuando sí hay blur */
+    @supports (-webkit-backdrop-filter: blur(1px)) {
+      @media (min-width: 769px) {
+        nav { -webkit-backdrop-filter: blur(12px); }
+        .cart-overlay { -webkit-backdrop-filter: blur(4px); }
+        .co-modal-overlay { -webkit-backdrop-filter: blur(6px); }
+        .pd-overlay { -webkit-backdrop-filter: blur(16px); }
+      }
+    }
+
+    /* ── CRYPTO BTC BLOCK ── */
+    .crypto-btc-block {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.2rem;
+      background: linear-gradient(135deg, rgba(247,147,26,0.07) 0%, rgba(247,147,26,0.03) 100%);
+      border: 1px solid rgba(247,147,26,0.2);
+      border-radius: 1rem;
+      padding: 1.4rem 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .btc-icon {
+      font-size: 2rem;
+      color: #f7931a;
+      flex-shrink: 0;
+      line-height: 1;
+      margin-top: .1rem;
+    }
+    .btc-content { flex: 1; }
+    .btc-title {
+      font-size: .95rem;
+      font-weight: 800;
+      letter-spacing: -.01em;
+      color: var(--white);
+      margin-bottom: .4rem;
+    }
+    .btc-desc {
+      font-size: .82rem;
+      color: rgba(255,255,255,0.62);
+      line-height: 1.6;
+      margin-bottom: .7rem;
+    }
+    .btc-desc strong { color: #f7931a; }
+    .btc-disclaimer {
+      font-size: .7rem;
+      color: rgba(255,255,255,0.3);
+      line-height: 1.55;
+      border-top: 1px solid rgba(255,255,255,0.07);
+      padding-top: .6rem;
+      margin-top: .5rem;
+    }
+    @media (max-width: 600px) {
+      .crypto-btc-block { flex-direction: column; gap: .8rem; padding: 1.1rem 1.1rem; }
+    }
+
+    /* Respetar preferencia de movimiento reducido */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+</head>
+<body>
+
+<!-- PARTICLES CANVAS -->
+<canvas id="cv-particles"></canvas>
+<!-- CUSTOM CURSOR (solo desktop) -->
+<div id="cur-dot"></div>
+<div id="cur-ring"></div>
+
+<!-- AGE GATE — Ley 2354 de 2024 -->
+<div id="age-gate">
+  <div class="ag-inner">
+    <div class="ag-badge">✦ Solo para mayores de edad</div>
+    <div class="ag-number"><span class="plus">+</span>18</div>
+    <p class="ag-title">
+      <strong>¿Tienes 18 años o más?</strong><br>
+      Este sitio vende productos con nicotina.<br>
+      Confirma tu edad para continuar.
+    </p>
+    <div class="ag-btns">
+      <button class="ag-yes" onclick="confirmAge()">Sí, soy mayor de 18 años</button>
+      <button class="ag-no"  onclick="denyAge()">No, soy menor de edad</button>
+    </div>
+    <p class="ag-legal">
+      Producto exclusivo para mayores de 18 años · Contiene nicotina<br>
+      Ley 2354 de 2024 · Colombia
+    </p>
+  </div>
+</div>
+
+<!-- BARRA CARRITO FLOTANTE -->
+<div id="sticky-cart">
+  <div class="sc-inner">
+    <div class="sc-info">
+      <div class="sc-count" id="sc-count">0 productos</div>
+      <div class="sc-total" id="sc-total">$0</div>
+      <div class="sc-gift">🎁 + vape 15k puffs de regalo</div>
+    </div>
+    <button class="sc-btn" onclick="openCheckout()">Ver pedido →</button>
+  </div>
+</div>
+
+<!-- PRODUCT DETAIL MODAL -->
+<div class="pd-overlay" id="pdOverlay" role="dialog" aria-modal="true" aria-label="Detalle de producto">
+  <div class="pd-modal" id="pdModal">
+    <div class="pd-img-wrap">
+      <img id="pd-img" src="" alt="">
+    </div>
+    <button class="pd-close" id="pdClose" aria-label="Cerrar">✕</button>
+    <div class="pd-info">
+      <span class="pd-brand-pill" id="pd-brand"></span>
+      <div class="pd-flavor" id="pd-flavor"></div>
+      <div class="pd-specs" id="pd-specs"></div>
+      <p class="pd-desc" id="pd-desc"></p>
+      <div class="pd-features" id="pd-features"></div>
+      <div class="pd-footer">
+        <div>
+          <div class="pd-price" id="pd-price"></div>
+          <div class="pd-stock-badge" id="pd-stock-badge"></div>
+        </div>
+        <button class="pd-add-btn" id="pd-add-btn">+ Agregar al carrito</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">ARCA<span>VAPES</span> ✦</div>
+  <div style="display:flex;align-items:center;gap:.7rem;">
+    <button class="cart-btn" id="cartBtn" onclick="openCart()">
+      🛒 Carrito
+      <span class="cart-badge" id="cartBadge">0</span>
+    </button>
+    <a href="#productos" class="nav-cta">Comprar ahora</a>
+  </div>
+</nav>
+
+<!-- CART OVERLAY & DRAWER -->
+<div class="cart-overlay" id="cartOverlay"></div>
+<div class="cart-drawer" id="cartDrawer">
+  <div class="cart-header">
+    <span class="cart-title">🛒 Tu pedido</span>
+    <button class="cart-close" id="cartClose" aria-label="Cerrar carrito">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty">
+      <div class="cart-empty-icon">🛒</div>
+      <div>Tu carrito está vacío.<br>Agrega vapes desde el catálogo.</div>
+    </div>
+  </div>
+  <div class="cart-footer" id="cartFooter" style="display:none;">
+    <div class="cart-subtotal">
+      <span class="cart-subtotal-label">Total</span>
+      <span class="cart-subtotal-val" id="cartTotal">$0</span>
+    </div>
+    <div class="cart-gift-note">🎁 <strong>¡Llevas un vape de 15.000 puffs de regalo!</strong> Se agrega automáticamente con tu pedido.</div>
+    <button class="btn-checkout" onclick="openCheckout()">🛒 Pagar ahora</button>
+  </div>
+</div>
+
+<!-- CHECKOUT MODAL -->
+<div class="co-modal-overlay" id="checkoutModal">
+  <div class="co-modal">
+
+    <!-- HEADER con stepper -->
+    <div class="co-modal-head">
+      <div class="co-stepper">
+        <div class="co-stepper-dot" id="sdot1"><span>1</span></div>
+        <div class="co-stepper-line"></div>
+        <div class="co-stepper-dot" id="sdot2"><span>2</span></div>
+        <div class="co-stepper-line"></div>
+        <div class="co-stepper-dot" id="sdot3"><span>3</span></div>
+      </div>
+      <button class="cart-close" id="coCloseBtn" style="position:absolute;right:1.4rem;top:1.2rem;">✕</button>
+    </div>
+
+    <!-- STEP 1: Datos de entrega + método de pago -->
+    <div class="co-step" id="coStep1">
+      <div class="co-step-title">¿A dónde te lo llevamos?</div>
+
+      <div class="co-section-label">Datos de entrega</div>
+      <div class="co-fields">
+        <input class="co-input" id="coName"    type="text" placeholder="Nombre completo" autocomplete="name">
+        <input class="co-input" id="coPhone"   type="tel"  placeholder="Teléfono / WhatsApp" autocomplete="tel">
+        <input class="co-input" id="coCity"   type="text"  placeholder="Ciudad" >
+        <input class="co-input" id="coAddress" type="text" placeholder="Dirección en Colombia" autocomplete="street-address">
+        <input class="co-input" id="coNotes"   type="text" placeholder="Indicaciones (apto, barrio, referencia…)">
+      </div>
+
+      <div class="co-section-label" style="margin-top:1.4rem;">Método de pago</div>
+      <div class="co-pay-options">
+        <div class="pay-option" id="pay-cod">
+          <div class="pay-icon">🤝</div>
+          <div class="pay-label">Contra entrega</div>
+          <div class="pay-sub">Pagas cuando llega</div>
+        </div>
+        <div class="pay-option" id="pay-card">
+          <div class="pay-icon">💳</div>
+          <div class="pay-label">Tarjeta</div>
+          <div class="pay-sub">Pago seguro</div>
+        </div>
+      </div>
+
+
+      <!-- Info Bogotá (cod + tarjeta) -->
+      <div class="co-cod-info" id="coCardBogota" style="display:none;">
+        <div class="co-cod-icon">🛵</div>
+        <div>
+          <strong>Entrega hoy en Bogotá</strong><br>
+          Las motos salen a las <strong>11:00 am</strong> y a las <strong>5:00 pm</strong>. <strong>Envío gratis</strong> — incluido en el precio.
+        </div>
+      </div>
+
+      <!-- Info nacional (cod + tarjeta) -->
+      <div class="co-cod-info" id="coCardNacional" style="display:none;">
+        <div class="co-cod-icon">📦</div>
+        <div>
+          <strong>Envío a todo Colombia</strong><br>
+          Tu pedido llega en 1 a 5 días hábiles. El envío lo cobra la transportadora — aprox. <strong>$5.000 a $10.000</strong> según la zona, se paga al recibir.
+        </div>
+      </div>
+
+      <button class="btn-checkout" id="coStep1Btn" style="margin-top:1.5rem;border:none;">Continuar →</button>
+    </div>
+
+    <!-- STEP 2: Resumen y confirmación -->
+    <div class="co-step" id="coStep2">
+      <div class="co-step-title">Confirma tu pedido</div>
+
+      <div class="co-confirm-box">
+        <div class="co-section-label">Productos</div>
+        <div id="coSummaryItems"></div>
+        <div class="co-summary-row co-summary-gift">
+          <span>🎁 Vape 15.000 puffs <span style="color:var(--gray);font-size:.75rem;">· Regalo incluido</span></span>
+          <span style="color:var(--white);font-weight:700;">GRATIS</span>
+        </div>
+        <div class="co-summary-divider"></div>
+        <div class="co-summary-row" id="coDeliveryRow" style="display:none;">
+          <span>🛵 Domicilio Bogotá</span>
+          <span>$12.000</span>
+        </div>
+        <div class="co-summary-row co-total-row">
+          <span>Total</span>
+          <span id="coTotal2"></span>
+        </div>
+      </div>
+
+      <div class="co-confirm-box" style="margin-top:.8rem;gap:.5rem;">
+        <div class="co-section-label">Entrega</div>
+        <div class="co-detail-row"><span style="color:var(--gray);">Nombre</span><span id="coDetailName"></span></div>
+        <div class="co-detail-row"><span style="color:var(--gray);">Teléfono</span><span id="coDetailPhone"></span></div>
+        <div class="co-detail-row"><span style="color:var(--gray);">Dirección</span><span id="coDetailAddress"></span></div>
+        <div class="co-detail-row" id="coDetailNotesRow"><span style="color:var(--gray);">Indicaciones</span><span id="coDetailNotes"></span></div>
+        <div class="co-detail-row"><span style="color:var(--gray);">Pago</span><span id="coDetailMethod"></span></div>
+        <div class="co-detail-row"><span style="color:var(--gray);">Tiempo estimado</span><span style="color:var(--white);" id="coDetailTime">1–5 días hábiles</span></div>
+      </div>
+
+      <div style="display:flex;gap:.7rem;margin-top:1.4rem;">
+        <button class="btn-checkout btn-checkout-ghost" id="coBackBtn" style="flex:0 0 auto;width:46px;padding:0;">←</button>
+        <button class="btn-checkout" id="coConfirmBtn" style="border:none;flex:1;">✓ Confirmar pedido</button>
+      </div>
+    </div>
+
+    <!-- STEP 3: Éxito (contra entrega) -->
+    <div class="co-step" id="coStep3">
+      <div class="co-success-icon">✓</div>
+      <div class="co-step-title" style="text-align:center;margin-bottom:.6rem;">¡Muchas gracias por tu compra!</div>
+      <p style="color:var(--gray);text-align:center;font-size:.9rem;line-height:1.7;">
+        Tu pedido está confirmado y ya lo estamos procesando. 🙌<br><br>
+        <strong style="color:var(--white);">Recibirás tu pedido en 1 a 5 días hábiles.</strong><br>
+        El envío en Bogotá es gratis. Para otras ciudades, el transportador cobra entre $5.000 y $10.000 al momento de la entrega.
+      </p>
+      <div class="co-success-gift">🎁 Tu vape de 15.000 puffs de regalo ya viene incluido en tu pedido.</div>
+      <div class="co-success-order" id="coSuccessOrder"></div>
+      <button class="btn-checkout" id="coSuccessBtn" style="margin-top:1.5rem;border:none;">¡Perfecto! 🎉</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- HERO -->
+<section class="hero" id="heroSection">
+  <div class="hero-badge">✦ Envío gratis en Bogotá · Nacional desde $5.000</div>
+  <h1 id="heroTitle">
+    <span class="hero-line"><span class="hero-word hero-word-1">ARCA</span></span>
+    <span class="hero-line"><span class="hero-word hero-word-2">VAPES</span></span>
+  </h1>
+  <p class="hero-slogan">
+    <em>Más puffs, mismo precio.</em> Hasta 35.000 puffs.<br>El catálogo más completo de Bogotá.
+  </p>
+  <div class="hero-actions">
+    <a href="#productos" class="btn-primary">Ver catálogo</a>
+    <a href="https://wa.me/573144190624" class="btn-ghost" target="_blank" rel="noopener">WhatsApp →</a>
+  </div>
+  <div class="hero-gift">
+    🎁 <strong>Con cada compra: un vape de 15.000 puffs de regalo.</strong> El vape de regalo no cuenta con garantía de fábrica.
+  </div>
+  <div class="hero-scroll-bar">
+    <div class="hsb-line"></div>
+    Scroll
+  </div>
+  <div class="hero-big-num">
+    <div class="hbn-num">35K</div>
+    <div class="hbn-lab">puffs máximos</div>
+  </div>
+</section>
+
+<!-- GIFT STRIP -->
+<div class="gift-strip">
+  <h2>🎁 Compra cualquier vape y lleva uno de 15k puffs gratis</h2>
+  <p>El regalo llega junto a tu pedido. Siempre. Sin excepción.</p>
+  <p>El vape de regalo no cuenta con garantía de fábrica.</p>
+</div>
+
+<!-- MARQUEE -->
+<div class="mq-strip" aria-hidden="true">
+  <div class="mq-track">
+    <div class="mq-item">Wefume · 30.000 puffs <span class="mq-sep"></span></div>
+    <div class="mq-item">Upload · 25.000 puffs <span class="mq-sep"></span></div>
+    <div class="mq-item">Hookalit · 35.000 puffs <span class="mq-sep"></span></div>
+    <div class="mq-item">Envío mismo día en Bogotá <span class="mq-sep"></span></div>
+    <div class="mq-item">+1 vape de regalo · Siempre <span class="mq-sep"></span></div>
+    <div class="mq-item">Wefume · 30.000 puffs <span class="mq-sep"></span></div>
+    <div class="mq-item">Upload · 25.000 puffs <span class="mq-sep"></span></div>
+    <div class="mq-item">Hookalit · 35.000 puffs <span class="mq-sep"></span></div>
+    <div class="mq-item">Envío mismo día en Bogotá <span class="mq-sep"></span></div>
+    <div class="mq-item">+1 vape de regalo · Siempre <span class="mq-sep"></span></div>
+  </div>
+</div>
+
+<!-- STATS STRIP -->
+<div class="stats-strip">
+  <div class="stats-inner">
+    <div class="sstat reveal">
+      <div class="sstat-n">35k</div>
+      <div class="sstat-l">Puffs máximos<br>en el catálogo</div>
+    </div>
+    <div class="sstat reveal">
+      <div class="sstat-n">4</div>
+      <div class="sstat-l">Marcas premium<br>disponibles</div>
+    </div>
+    <div class="sstat reveal">
+      <div class="sstat-n">24h</div>
+      <div class="sstat-l">Entrega en Bogotá<br>mismo día</div>
+    </div>
+    <div class="sstat reveal">
+      <div class="sstat-n">+1</div>
+      <div class="sstat-l">Vape de regalo<br>en cada pedido</div>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCTS -->
+<section id="productos">
+  <div class="container">
+    <p class="sec-label reveal">Catálogo completo</p>
+    <h2 class="sec-title reveal">Nuestros vapes</h2>
+
+
+    
+
+<!-- CRYPTO VIBE -->
+    <div class="product-line reveal">
+      <div class="line-header">
+        <span class="line-name">Crypto Vibe</span>
+        <span class="line-puffs">30.000 puffs</span>
+        <span class="line-price">$65.000</span>
+      </div>
+      <p class="brand-desc">El vape más disruptivo del mercado. Diseño metalizado premium con emblema Bitcoin, mesh coil y 30k puffs. Y lo mejor: trae un código QR en la parte trasera con posibilidad de ganar hasta USD $1.000 en Bitcoin.</p>
+
+      <!-- BTC FEATURE BLOCK -->
+      <div class="crypto-btc-block reveal">
+        <div class="btc-icon">₿</div>
+        <div class="btc-content">
+          <div class="btc-title">1 de cada 5 tiene chance de ganar BTC</div>
+          <div class="btc-desc">Escanea el código QR del vape, regístrate y descubre si ganaste hasta <strong>USD $1.000 en Bitcoin</strong> directo a tu wallet.</div>
+          <div class="btc-disclaimer">⚠️ Arca Vapes no es responsable por el funcionamiento del QR, la disponibilidad del premio, ni si el código aplica o no. Esta es una promoción exclusiva de la marca Crypto Vibe.</div>
+        </div>
+      </div>
+
+      <div class="products-grid">
+        <div class="product-card reveal" data-stock="20" data-sku="crypto-blueberry-raspberry">
+          <img src="assets/products/crypto-blueberry-raspberry.png" loading="lazy" alt="Crypto Blueberry Raspberry">
+          <div class="card-info">
+            <div class="card-flavor">Blueberry Raspberry</div>
+            <div class="card-brand">Crypto Vibe · 30k puffs</div>
+            <div class="card-desc">Mora azul con frambuesa. Frutal, dulce e intenso. El más pedido.</div>
+            <div class="card-stock">20 disponibles</div>
+          </div>
+          <div class="card-add">
+            <span style="font-size:.72rem;color:var(--gray);">$65.000</span>
+            <button class="btn-add" onclick="addToCart(this, 'Blueberry Raspberry', 'Crypto Vibe · 30k puffs', 65000, 'assets/products/crypto-blueberry-raspberry.png')">+ Agregar</button>
+          </div>
+        </div>
+        <div class="product-card reveal" data-stock="9" data-sku="crypto-grape-ice">
+          <img src="assets/products/crypto-grape-ice.png" loading="lazy" alt="Crypto Grape Ice">
+          <div class="card-info">
+            <div class="card-flavor">Grape Ice</div>
+            <div class="card-brand">Crypto Vibe · 30k puffs</div>
+            <div class="card-desc">Uva madura con hielo intenso. Dulce, frío y muy refrescante.</div>
+            <div class="card-stock">9 disponibles</div>
+          </div>
+          <div class="card-add">
+            <span style="font-size:.72rem;color:var(--gray);">$65.000</span>
+            <button class="btn-add" onclick="addToCart(this, 'Grape Ice', 'Crypto Vibe · 30k puffs', 65000, 'assets/products/crypto-grape-ice.png')">+ Agregar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+<!-- WEFUME -->
+    <div class="product-line reveal">
+      <div class="line-header">
+        <span class="line-name">Wefume</span>
+        <span class="line-puffs">30.000 puffs</span>
+        <span class="line-price">$65.000</span>
+      </div>
+      <p class="brand-desc">El smartwatch de los vapes. Bocina, micrófono, calculadora y pantalla táctil integrados — todo en un solo dispositivo.</p>
+      <div class="products-grid">
+        <div class="product-card reveal" data-stock="5" data-sku="wefume-peach-banana">
+          <img src="assets/products/peachbanana.png" loading="lazy" alt="Wefume Peach Banana">
+          <div class="card-info">
+            <div class="card-flavor">Peach Banana</div>
+            <div class="card-brand">Wefume · 30k puffs</div>
+            <div class="card-desc">Durazno maduro con plátano suave. Frutal y equilibrado.</div>
+            <div class="card-stock">5 disponibles</div>
+          </div>
+          <div class="card-add">
+            <span style="font-size:.72rem;color:var(--gray);">$65.000</span>
+            <button class="btn-add" onclick="addToCart(this, 'Peach Banana', 'Wefume · 30k puffs', 65000, 'assets/products/peachbanana.png')">+ Agregar</button>
+          </div>
+        </div>
+        <div class="product-card reveal" data-stock="6" data-sku="wefume-cherry-black-ice">
+          <img src="assets/products/cherryblackice.png" loading="lazy" alt="Wefume Cherry Black Ice">
+          <div class="card-info">
+            <div class="card-flavor">Cherry Black Ice</div>
+            <div class="card-brand">Wefume · 30k puffs</div>
+            <div class="card-desc">Cereza oscura con toque mentolado intenso. Para los amantes del hielo.</div>
+            <div class="card-stock">6 disponibles</div>
+          </div>
+          <div class="card-add">
+            <span style="font-size:.72rem;color:var(--gray);">$65.000</span>
+            <button class="btn-add" onclick="addToCart(this, 'Cherry Black Ice', 'Wefume · 30k puffs', 65000, 'assets/products/cherryblackice.png')">+ Agregar</button>
+          </div>
+        </div>
+        <div class="product-card reveal out-of-stock" data-stock="0" data-sku="wefume-strawberry-kiwi">
+          <img src="assets/products/strawberrykiwi.png" loading="lazy" alt="Wefume Strawberry Kiwi">
+          <div class="card-info">
+            <div class="card-flavor">Strawberry Kiwi</div>
+            <div class="card-brand">Wefume · 30k puffs</div>
+          </div>
+          <div class="card-add">
+            <span style="font-size:.72rem;color:var(--gray);">$65.000</span>
+            <button class="btn-add" onclick="addToCart(this, 'Strawberry Kiwi', 'Wefume · 30k puffs', 65000, 'assets/products/strawberrykiwi.png')">+ Agregar</button>
+          </div>
+        </div>
+        <div class="product-card reveal out-of-stock" data-stock="0" data-sku="wefume-pink-lemonade">
+          <img src="assets/products/pinklemonade.png" loading="lazy" alt="Pink Lemonade">
+          <div class="card-info">
+            <div class="card-flavor">Pink Lemonade</div>
+            <div class="card-brand">Wefume · 30k puffs</div>
+            <div class="card-desc">Limonada rosada con frescura cítrica y dulzura natural.</div>
+            <div class="card-stock low">⚡ Última unidad</div>
+          </div>
+          <div class="card-add">
+            <span style="font-size:.72rem;color:var(--gray);">$65.000</span>
+            <button class="btn-add" onclick="addToCart(this, 'Pink Lemonade', 'Wefume · 30k puffs', 65000, 'assets/products/pinklemonade.png')">+ Agregar</button>
+          </div>
+        </div>
+        <div class="product-card reveal" data-stock="12" data-sku="wefume-clear">
+          <img src="assets/products/clear.png" loading="lazy" alt="Wefume Clear">
+          <div class="card-info">
+            <div class="card-flavor">Clear</div>
+            <div class="card-brand">Wefume · 30k puffs</div>
+            <div class="card-desc">Sin sabor añadido. Para quienes prefieren el vapeo puro y limpio.</div>
+            <div class="card-stock">12 disponibles</div>
+          </div>
+          <div class="card-add">
+            <span style="font-size:.72rem;color:var(--gray);">$65.000</span>
+            <button class="btn-add" onclick="addToCart(this, 'Clear', 'Wefume · 30k puffs', 65000, 'assets/products/clear.png')">+ Agregar</button>
+          </div>
+        </div>
+        <div class="product-card reveal" data-stock="3" data-sku="wefume-mango-mint">
+          <img src="assets/products/wefume-mango-mint.png" loading="lazy" alt="Wefume Mango Mint">
+          <div class="card-info">
+            <div class="card-flavor">Mango Mint</div>
+            <div class="card-brand">Wefume · 30k puffs</div>
+            <div class="card-desc">Mango maduro con toque mentolado fresco. Tropical y refrescante.</div>
+            <div class="card-stock">3 disponibles</div>
+          </div>
+          <div class="card-add">
+            <span style="font-size:.72rem;color:var(--gray);">$65.000</span>
+            <button class="btn-add" onclick="addToCart(this, 'Mango Mint', 'Wefume · 30k puffs', 65000, 'assets/products/wefume-mango-mint.png')">+ Agregar</button>
+          </div>
+        </div>
+        <div class="product-card reveal" data-stock="1" data-sku="wefume-miami-mix">
+          <img src="assets/products/wefume-miami-mint.png" loading="lazy" alt="Wefume Miami Mix">
+          <div class="card-info">
+            <div class="card-flavor">Miami Mix</div>
+            <div class="card-brand">Wefume · 30k puffs</div>
+            <div class="card-desc">Mezcla tropical con frescura vibrante. Sabor de verano todo el año.</div>
+            <div class="card-stock low">⚡ Última unidad</div>
+          </div>
+          <div class="card-add">
+            <span style="font-size:.72rem;color:var(--gray);">$65.000</span>
+            <button class="btn-add" onclick="addToCart(this, 'Miami Mix', 'Wefume · 30k puffs', 65000, 'assets/products/wefume-miami-mint.png')">+ Agregar</button>
+          </div>
+        </div>
+        <div class="product-card reveal out-of-stock" data-stock="0" data-sku="wefume-dragon-fruit">
+          <img src="assets/products/wefume-dragon-fruit.png" loading="lazy" alt="Wefume Dragon Fruit">
+          <div class="card-info">
+            <div class="card-flavor">Dragon Fruit</div>
+            <div class="card-brand">Wefume · 30k puffs</div>
+            <div class="card-desc">Pitahaya tropical suave y aromática. Diferente y delicioso.</div>
+            <div class="card-stock">Agotado</div>
+          </div>
+          <div class="card-add">
+            <span style="font-size:.72rem;color:var(--gray);">$65.000</span>
+            <button class="btn-add" onclick="addToCart(this, 'Dragon Fruit', 'Wefume · 30k puffs', 65000, 'assets/products/wefume-dragon-fruit.png')">+ Agregar</button>
+          </div>
+        </div>
+        <div class="product-card reveal out-of-stock" data-stock="0" data-sku="wefume-sorpresa">
+          <img src="assets/products/sorpresawefume.png" loading="lazy" alt="Wefume Sorpresa">
+          <div class="card-info">
+            <div class="card-flavor">Sorpresa</div>
+            <div class="card-brand">Wefume · 30k puffs</div>
+            <div class="card-desc">¿Te atreves? Te mandamos un sabor al azar de los disponibles. Precio especial.</div>
+            <div class="card-stock">Agotado</div>
+          </div>
+          <div class="card-add">
+            <span style="font-size:.72rem;color:var(--gray);">$60.000</span>
+            <button class="btn-add" onclick="addToCart(this, 'Sorpresa', 'Wefume · 30k puffs', 60000, 'assets/products/sorpresawefume.png')">+ Agregar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    
+
+
+<!-- UPLOAD -->
+    <div class="product-line reveal">
+      <div class="line-header">
+        <span class="line-name">Upload</span>
+        <span class="line-puffs">25.000 puffs</span>
+        <span class="line-price">$55.000</span>
+      </div>
+      <p class="brand-desc">El vape porta retratos. Ponle tus fotos favoritas en la pantalla y personalízalo como quieras.</p>
+      <div class="products-grid">
+        <div class="product-card reveal out-of-stock" data-stock="0" data-sku="upload-blue-razz-ice">
+          <img src="assets/products/upload-blue-razz-ice.png" loading="lazy" alt="Upload Blue Razz Ice">
+          <div class="card-info">
+            <div class="card-flavor">Blue Razz Ice</div>
+            <div class="card-brand">Upload · 25k puffs</div>
+            <div class="card-desc">Frambuesa azul con hielo potente. Dulce y refrescante a la vez.</div>
+            <div class="card-stock">Agotado</div>
+          </div>
+          <div class="card-add">
+            <span style="font-size:.72rem;color:var(--gray);">$55.000</span>
+            <button class="btn-add" onclick="addToCart(this, 'Blue Razz Ice', 'Upload · 25k puffs', 55000, 'assets/products/upload-blue-razz-ice.png')">+ Agregar</button>
+          </div>
+        </div>
+        <div class="product-card reveal" data-stock="1" data-sku="upload-miami-mint">
+          <img src="assets/products/upload-miami-mint.png" loading="lazy" alt="Upload Miami Mint">
+          <div class="card-info">
+            <div class="card-flavor">Miami Mint</div>
+            <div class="card-brand">Upload · 25k puffs</div>
+            <div class="card-desc">Menta vibrante con frescura tropical. El sabor del verano.</div>
+            <div class="card-stock low">⚡ Última unidad</div>
+          </div>
+          <div class="card-add">
+            <span style="font-size:.72rem;color:var(--gray);">$55.000</span>
+            <button class="btn-add" onclick="addToCart(this, 'Miami Mint', 'Upload · 25k puffs', 55000, 'assets/products/upload-miami-mint.png')">+ Agregar</button>
+          </div>
+        </div>
+        <div class="product-card reveal out-of-stock" data-stock="0" data-sku="upload-sorpresa">
+          <img src="assets/products/sorpresaupload.png" loading="lazy" alt="Upload Sorpresa">
+          <div class="card-info">
+            <div class="card-flavor">Sorpresa</div>
+            <div class="card-brand">Upload · 25k puffs</div>
+            <div class="card-desc">¿Te atreves? Te mandamos un sabor al azar de los disponibles. Precio especial.</div>
+            <div class="card-stock">Agotado</div>
+          </div>
+          <div class="card-add">
+            <span style="font-size:.72rem;color:var(--gray);">$50.000</span>
+            <button class="btn-add" onclick="addToCart(this, 'Sorpresa', 'Upload · 25k puffs', 50000, 'assets/products/sorpresaupload.png')">+ Agregar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    
+
+
+<!-- HOOKALIT -->
+    <div class="product-line reveal">
+      <div class="line-header">
+        <span class="line-name">Hookalit</span>
+        <span class="line-puffs">35.000 puffs</span>
+        <span class="line-price">$65.000</span>
+      </div>
+      <p class="brand-desc">El que más humo saca de todos. Diseñado para nubes densas, sabores intensos y esa experiencia de hookah que todos quieren.</p>
+      <div class="products-grid">
+        <div class="product-card reveal" data-stock="5" data-sku="hookalit-blue-mist">
+          <img src="assets/products/hookalit-blue-mist.png" loading="lazy" alt="Hookalit Blue Mist">
+          <div class="card-info">
+            <div class="card-flavor">Blue Mist</div>
+            <div class="card-brand">Hookalit · 35k puffs</div>
+            <div class="card-desc">Mezcla frutal azul envuelta en una bruma fresca e intensa.</div>
+            <div class="card-stock">5 disponibles</div>
+          </div>
+          <div class="card-add">
+            <span style="font-size:.72rem;color:var(--gray);">$65.000</span>
+            <button class="btn-add" onclick="addToCart(this, 'Blue Mist', 'Hookalit · 35k puffs', 65000, 'assets/products/hookalit-blue-mist.png')">+ Agregar</button>
+          </div>
+        </div>
+        <div class="product-card reveal" data-stock="3" data-sku="hookalit-gum-mint">
+          <img src="assets/products/hookalit-gum-min.png" loading="lazy" alt="Hookalit Gum Mint">
+          <div class="card-info">
+            <div class="card-flavor">Gum Mint</div>
+            <div class="card-brand">Hookalit · 35k puffs</div>
+            <div class="card-desc">Chicle de menta clásico. Refrescante desde el primer puff.</div>
+            <div class="card-stock">3 disponibles</div>
+          </div>
+          <div class="card-add">
+            <span style="font-size:.72rem;color:var(--gray);">$65.000</span>
+            <button class="btn-add" onclick="addToCart(this, 'Gum Mint', 'Hookalit · 35k puffs', 65000, 'assets/products/hookalit-gum-min.png')">+ Agregar</button>
+          </div>
+        </div>
+        <div class="product-card reveal out-of-stock" data-stock="0" data-sku="hookalit-lady-killer">
+          <img src="assets/products/hookalit-lady-killer.png" loading="lazy" alt="Hookalit Lady Killer">
+          <div class="card-info">
+            <div class="card-flavor">Lady Killer</div>
+            <div class="card-brand">Hookalit · 35k puffs</div>
+            <div class="card-desc">Frutas rojas dulces con un toque de hielo. Elegante e intenso.</div>
+            <div class="card-stock">Agotado</div>
+          </div>
+          <div class="card-add">
+            <span style="font-size:.72rem;color:var(--gray);">$65.000</span>
+            <button class="btn-add" onclick="addToCart(this, 'Lady Killer', 'Hookalit · 35k puffs', 65000, 'assets/products/hookalit-lady-killer.png')">+ Agregar</button>
+          </div>
+        </div>
+        <div class="product-card reveal" data-stock="5" data-sku="hookalit-magic-love">
+          <img src="assets/products/magiclove.png" loading="lazy" alt="Hookalit Magic Love">
+          <div class="card-info">
+            <div class="card-flavor">Magic Love</div>
+            <div class="card-brand">Hookalit · 35k puffs</div>
+            <div class="card-desc">Mezcla tropical dulce y aromática. El preferido de muchos.</div>
+            <div class="card-stock">5 disponibles</div>
+          </div>
+          <div class="card-add">
+            <span style="font-size:.72rem;color:var(--gray);">$65.000</span>
+            <button class="btn-add" onclick="addToCart(this, 'Magic Love', 'Hookalit · 35k puffs', 65000, 'assets/products/magiclove.png')">+ Agregar</button>
+          </div>
+        </div>
+        <div class="product-card reveal" data-stock="2" data-sku="hookalit-lucid-dream">
+          <img src="assets/products/lucidream.png" loading="lazy" alt="Hookalit Lucid Dream">
+          <div class="card-info">
+            <div class="card-flavor">Lucid Dream</div>
+            <div class="card-brand">Hookalit · 35k puffs</div>
+            <div class="card-desc">Frutas exóticas con un acabado suave y envolvente. Diferente.</div>
+            <div class="card-stock">2 disponibles</div>
+          </div>
+          <div class="card-add">
+            <span style="font-size:.72rem;color:var(--gray);">$65.000</span>
+            <button class="btn-add" onclick="addToCart(this, 'Lucid Dream', 'Hookalit · 35k puffs', 65000, 'assets/products/lucidream.png')">+ Agregar</button>
+          </div>
+        </div>
+        <div class="product-card reveal" data-stock="3" data-sku="hookalit-love66">
+          <img src="assets/products/love66.png" loading="lazy" alt="Hookalit Love 66">
+          <div class="card-info">
+            <div class="card-flavor">Love 66</div>
+            <div class="card-brand">Hookalit · 35k puffs</div>
+            <div class="card-desc">Frutas tropicales con un acabado dulce y suave. Muy adictivo.</div>
+            <div class="card-stock">3 disponibles</div>
+          </div>
+          <div class="card-add">
+            <span style="font-size:.72rem;color:var(--gray);">$65.000</span>
+            <button class="btn-add" onclick="addToCart(this, 'Love 66', 'Hookalit · 35k puffs', 65000, 'assets/products/love66.png')">+ Agregar</button>
+          </div>
+        </div>
+        <div class="product-card reveal" data-stock="1" data-sku="hookalit-double-apple">
+          <img src="assets/products/doubleapple.png" loading="lazy" alt="Hookalit Double Apple">
+          <div class="card-info">
+            <div class="card-flavor">Double Apple</div>
+            <div class="card-brand">Hookalit · 35k puffs</div>
+            <div class="card-desc">Manzana roja y verde doble. Dulce, fresco y muy reconocible.</div>
+            <div class="card-stock low">⚡ Última unidad</div>
+          </div>
+          <div class="card-add">
+            <span style="font-size:.72rem;color:var(--gray);">$65.000</span>
+            <button class="btn-add" onclick="addToCart(this, 'Double Apple', 'Hookalit · 35k puffs', 65000, 'assets/products/doubleapple.png')">+ Agregar</button>
+          </div>
+        </div>
+        <div class="product-card reveal out-of-stock" data-stock="0" data-sku="hookalit-sorpresa">
+          <img src="assets/products/sorpresahooka.png" loading="lazy" alt="Hookalit Sorpresa">
+          <div class="card-info">
+            <div class="card-flavor">Sorpresa</div>
+            <div class="card-brand">Hookalit · 35k puffs</div>
+            <div class="card-desc">¿Te atreves? Te mandamos un sabor al azar de los disponibles. Precio especial.</div>
+            <div class="card-stock">Agotado</div>
+          </div>
+          <div class="card-add">
+            <span style="font-size:.72rem;color:var(--gray);">$60.000</span>
+            <button class="btn-add" onclick="addToCart(this, 'Sorpresa', 'Hookalit · 35k puffs', 60000, 'assets/products/sorpresahooka.png')">+ Agregar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<!-- ORDER -->
+<section class="order-section" id="pedir">
+  <div class="container">
+    <p class="sec-label reveal">¿Cómo pedir?</p>
+    <h2 class="sec-title reveal">Whatsapp, Rappi, Página.<br>Rápido y sin vueltas.</h2>
+    <p class="order-desc reveal">Escríbenos, o pide directamente en nuestra página. Tu pedido llega con el regalo incluido. También estamos en Rappi.</p>
+    <div class="channels">
+      <a href="https://wa.me/573144190624" class="ch-card reveal" target="_blank">
+        <div class="ch-icon">💬</div>
+        <div class="ch-name">WhatsApp</div>
+        <div class="ch-detail">+57 314 419 0624<br>Respuesta inmediata</div>
+      </a>
+      <div class="ch-card reveal" style="cursor:default;">
+        <div class="ch-icon">🛵</div>
+        <div class="ch-name">Rappi</div>
+        <div class="ch-detail">
+          Arca Vapes 85<br>
+          Arca Vapes 127<br>
+          Arca Vapes Calle 175<br>
+          Arca Vapes Chapinero
+        </div>
+      </div>
+      <a href="https://www.instagram.com/arcavapes_" class="ch-card reveal" target="_blank">
+        <div class="ch-icon">📸</div>
+        <div class="ch-name">Instagram</div>
+        <div class="ch-detail">@arcavapes_<br>Novedades y sabores</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-brand">ARCA VAPES ✦</span>
+  <p>Bogotá · arcavapes.com · @arcavapes_</p>
+  <div class="footer-legal">
+    ⚠️ <strong>Producto exclusivo para mayores de 18 años.</strong>
+    Contiene nicotina, una sustancia altamente adictiva. Venta prohibida a menores de edad conforme a la
+    <strong>Ley 2354 de 2024</strong> y la Ley 1335 de 2009.
+    Arca Vapes no promueve el inicio del consumo de nicotina. © 2026 Arca Vapes · arcavapes.com
+  </div>
+</footer>
+
+<!-- BOTÓN FLOTANTE WHATSAPP -->
+<a href="https://wa.me/573144190624" class="wa-float" target="_blank" rel="noopener noreferrer" aria-label="Contáctanos por WhatsApp">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+</a>
+
+<script>
+  /* ═══════════════════════════════
+     ARCA VAPES — Cart & Checkout
+     Reescrito desde cero, sin errores
+  ═══════════════════════════════ */
+
+
+  // ══════════════════════════════════════════════
+  //  SUPABASE — Stock en tiempo real
+  // ══════════════════════════════════════════════
+  const SUPA_URL = 'https://vlesxjxgkfsnygttlwhx.supabase.co';
+  const SUPA_KEY = 'sb_publishable_selYdEK7oDPAtr1EyNIe2A_ZycYY5f1';
+  const supa = supabase.createClient(SUPA_URL, SUPA_KEY);
+
+  // Carga el stock desde Supabase y actualiza cada tarjeta
+  async function cargarStock() {
+    try {
+      const { data, error } = await supa.from('productos').select('sku, stock');
+      if (error) { console.warn('Supabase error:', error.message); return; }
+      const stockMap = {};
+      data.forEach(r => { stockMap[r.sku] = r.stock; });
+
+      document.querySelectorAll('.product-card[data-sku]').forEach(card => {
+        const sku   = card.dataset.sku;
+        const stock = stockMap[sku];
+        if (stock === undefined) return;
+
+        // Actualizar data-stock
+        card.dataset.stock = stock;
+
+        // Actualizar badge de stock
+        const badge = card.querySelector('.card-stock');
+        if (badge) {
+          if (stock === 0) {
+            badge.textContent = 'Agotado';
+            badge.className = 'card-stock';
+          } else if (stock === 1) {
+            badge.textContent = '⚡ Última unidad';
+            badge.className = 'card-stock low';
+          } else {
+            badge.textContent = stock + ' disponibles';
+            badge.className = 'card-stock';
+          }
+        }
+
+        // Mostrar u ocultar la tarjeta
+        if (stock === 0) {
+          card.classList.add('out-of-stock');
+        } else {
+          card.classList.remove('out-of-stock');
+        }
+      });
+    } catch (e) {
+      console.warn('No se pudo cargar stock:', e);
+    }
+  }
+
+  // Descuenta stock en Supabase para los items del carrito
+  async function descontarStockPedido(items) {
+    // Agrupar cantidades por SKU
+    const skuQty = {};
+    items.forEach(item => {
+      const card = document.querySelector('.product-card[data-sku]');
+      // Buscar el SKU por imagen del item
+      const allCards = document.querySelectorAll('.product-card[data-sku]');
+      allCards.forEach(c => {
+        const img = c.querySelector('img');
+        if (img && img.alt && img.alt.toLowerCase().includes(item.flavor.toLowerCase())) {
+          const sku = c.dataset.sku;
+          skuQty[sku] = (skuQty[sku] || 0) + item.qty;
+        }
+      });
+    });
+
+    // Llamar descontar_stock por cada SKU
+    const promises = Object.entries(skuQty).map(([sku, qty]) =>
+      supa.rpc('descontar_stock', { p_sku: sku, p_cantidad: qty })
+        .then(({ error }) => {
+          if (error) console.warn('Error descontando', sku, error.message);
+        })
+    );
+    await Promise.all(promises);
+
+    // Recargar stock en pantalla
+    await cargarStock();
+  }
+
+  // Cargar stock al abrir la página
+  document.addEventListener('DOMContentLoaded', cargarStock);
+
+  // ── Estado ──────────────────────
+  let cart = [];
+  let nextId = 0;
+  let payMethod = 'cod'; // por defecto contra entrega
+
+  // ── Utilidades ──────────────────
+  function fp(n) {
+    return '$' + n.toLocaleString('es-CO');
+  }
+
+  function el(id) {
+    return document.getElementById(id);
+  }
+
+  function showToast(msg) {
+    const t = el('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(t._tid);
+    t._tid = setTimeout(() => t.classList.remove('show'), 2400);
+  }
+
+  // ── Drawer del carrito ──────────
+  function openCart() {
+    el('cartOverlay').classList.add('open');
+    el('cartDrawer').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    const waFloat = document.querySelector('.wa-float');
+    if (waFloat) waFloat.style.display = 'none';
+  }
+
+  function closeCart() {
+    const overlay = el('cartOverlay');
+    const drawer  = el('cartDrawer');
+    if (overlay) overlay.classList.remove('open');
+    if (drawer)  drawer.classList.remove('open');
+    document.body.style.overflow = '';
+    const waFloat = document.querySelector('.wa-float');
+    if (waFloat) waFloat.style.display = '';
+  }
+
+  // Listeners robustos para cerrar el carrito (evita problemas con onclick inline)
+  document.addEventListener('DOMContentLoaded', function() {
+    // Botón X
+    const cartClose = el('cartClose');
+    if (cartClose) {
+      cartClose.addEventListener('click', function(e) {
+        e.stopPropagation();
+        closeCart();
+      });
+    }
+    // Click en el overlay (fondo oscuro)
+    const cartOverlay = el('cartOverlay');
+    if (cartOverlay) {
+      cartOverlay.addEventListener('click', function() {
+        closeCart();
+      });
+    }
+    // ESC key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        if (el('cartDrawer') && el('cartDrawer').classList.contains('open')) closeCart();
+      }
+    });
+    // Evitar que clicks dentro del drawer cierren el carrito
+    const cartDrawer = el('cartDrawer');
+    if (cartDrawer) {
+      cartDrawer.addEventListener('click', function(e) {
+        e.stopPropagation();
+      });
+    }
+  });
+
+  // ── Agregar al carrito ──────────
+  function addToCart(btn, flavor, brand, price, img) {
+    const existing = cart.find(i => i.flavor === flavor && i.brand === brand);
+    if (existing) {
+      existing.qty++;
+    } else {
+      cart.push({ id: nextId++, flavor, brand, price, img, qty: 1 });
+    }
+    btn.textContent = '✓ Agregado';
+    btn.classList.add('added');
+    clearTimeout(btn._tid);
+    btn._tid = setTimeout(() => {
+      btn.textContent = '+ Agregar';
+      btn.classList.remove('added');
+    }, 1400);
+    renderCart();
+    updateStickyCart();
+    bumpBadge();
+    // Animar barra sticky en vez de toast
+    const scInner = document.querySelector('.sc-inner');
+    if (scInner) {
+      scInner.classList.remove('bump');
+      void scInner.offsetWidth;
+      scInner.classList.add('bump');
+    }
+  }
+
+  // ── Cambiar cantidad ────────────
+  function changeQty(id, delta) {
+    const idx = cart.findIndex(i => i.id === id);
+    if (idx === -1) return;
+    cart[idx].qty += delta;
+    if (cart[idx].qty <= 0) cart.splice(idx, 1);
+    renderCart();
+    updateStickyCart();
+  }
+
+  // ── Renderizar carrito ──────────
+  function renderCart() {
+    const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    const count = cart.reduce((s, i) => s + i.qty, 0);
+
+    // Badge
+    const badge = el('cartBadge');
+    badge.textContent = count;
+    count > 0 ? badge.classList.add('show') : badge.classList.remove('show');
+
+    const itemsEl  = el('cartItems');
+    const footerEl = el('cartFooter');
+
+    itemsEl.innerHTML = '';
+
+    if (cart.length === 0) {
+      footerEl.style.display = 'none';
+      const empty = document.createElement('div');
+      empty.className = 'cart-empty';
+      empty.innerHTML = '<div class="cart-empty-icon">🛒</div><div>Tu carrito está vacío.<br>Agrega vapes desde el catálogo.</div>';
+      itemsEl.appendChild(empty);
+      return;
+    }
+
+    footerEl.style.display = 'block';
+    let h = '';
+    cart.forEach(item => {
+      h += `<div class="cart-item">
+        <img src="${item.img}" alt="${item.flavor}" class="cart-item-img"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="cart-item-img-placeholder" style="display:none;">🌫️</div>
+        <div class="cart-item-info">
+          <div class="cart-item-name">${item.flavor}</div>
+          <div class="cart-item-brand">${item.brand}</div>
+          <div class="cart-item-price">${fp(item.price)} c/u</div>
+        </div>
+        <div class="cart-item-qty">
+          <button class="qty-btn" onclick="changeQty(${item.id},-1)">−</button>
+          <span class="qty-num">${item.qty}</span>
+          <button class="qty-btn" onclick="changeQty(${item.id},1)">+</button>
+        </div>
+      </div>`;
+    });
+    itemsEl.innerHTML = h;
+    el('cartTotal').textContent = fp(total);
+  }
+
+  // ── Sticky cart ─────────────────
+  function updateStickyCart() {
+    const count = cart.reduce((s, i) => s + i.qty, 0);
+    const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    const sc = el('sticky-cart');
+    if (!sc) return;
+    el('sc-count').textContent = count + ' producto' + (count !== 1 ? 's' : '');
+    el('sc-total').textContent = fp(total);
+    count > 0 ? sc.classList.add('visible') : sc.classList.remove('visible');
+  }
+
+  function bumpBadge() {
+    const badge = el('cartBadge');
+    if (!badge) return;
+    badge.classList.remove('bump');
+    void badge.offsetWidth;
+    badge.classList.add('bump');
+  }
+
+  // ── Checkout ────────────────────
+  function openCheckout() {
+    if (cart.length === 0) { showToast('Agrega productos primero 🛒'); return; }
+    closeCart();
+    el('checkoutModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    goStep(1);
+  }
+
+  function closeCheckout() {
+    el('checkoutModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function goStep(n) {
+    [1,2,3].forEach(i => {
+      const step = el('coStep' + i);
+      const dot  = el('sdot' + i);
+      if (step) step.classList.toggle('active', i === n);
+      if (dot) {
+        dot.classList.toggle('current', i === n);
+        dot.classList.toggle('done',    i < n);
+        if (i === n || i < n) dot.classList.remove('active');
+        else { dot.classList.remove('current'); dot.classList.remove('done'); }
+      }
+    });
+  }
+
+  function buildSummary() {
+    const city = el('coCity').value.trim();
+    const productTotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    const addDelivery = false; // Envío gratis incluido en precio
+    const total = productTotal + (addDelivery ? 12000 : 0);
+
+    let h = '';
+    cart.forEach(item => {
+      h += `<div class="co-summary-row">
+        <span>${item.flavor} <span style="color:var(--gray);font-size:.78rem;">× ${item.qty}</span></span>
+        <span>${fp(item.price * item.qty)}</span>
+      </div>`;
+    });
+    el('coSummaryItems').innerHTML = h;
+
+    // Mostrar/ocultar fila domicilio
+    const deliveryRow = el('coDeliveryRow');
+    if (deliveryRow) deliveryRow.style.display = addDelivery ? 'flex' : 'none';
+
+    el('coTotal2').textContent = fp(total);
+    el('coDetailName').textContent    = el('coName').value;
+    el('coDetailPhone').textContent   = el('coPhone').value;
+    el('coDetailAddress').textContent = (city ? city + ' — ' : '') + el('coAddress').value;
+    const notes = el('coNotes').value.trim();
+    el('coDetailNotes').textContent   = notes || '—';
+    const notesRow = el('coDetailNotesRow');
+    if (notesRow) notesRow.style.display = notes ? 'flex' : 'none';
+    el('coDetailMethod').textContent  = payMethod === 'cod' ? 'Contra entrega 🤝' : 'Tarjeta 💳';
+
+    // Tiempo estimado según ciudad y método
+    const timeEl = el('coDetailTime');
+    if (timeEl) {
+      if (city.toLowerCase().includes('bogot') || city.toLowerCase().includes('bta')) {
+        timeEl.textContent = 'Hoy — salidas 11:00 am y 5:00 pm';
+      } else {
+        timeEl.textContent = '1–5 días hábiles';
+      }
+    }
+  }
+
+  async function submitOrder() {
+    const name    = el('coName').value.trim();
+    const phone   = el('coPhone').value.trim();
+    const city    = el('coCity').value.trim();
+    const address = el('coAddress').value.trim();
+    const notes   = el('coNotes').value.trim();
+    const total   = cart.reduce((s, i) => s + i.price * i.qty, 0);
+
+    const itemsText = cart.map(i =>
+      `${i.flavor} (${i.brand}) × ${i.qty} = ${fp(i.price * i.qty)}`
+    ).join('\n') + '\n🎁 Vape TMT Floyd 15k puffs · GRATIS';
+
+    const body = `🛒 NUEVO PEDIDO — ARCA VAPES
+
+👤 Cliente: ${name}
+📱 Teléfono: ${phone}
+📍 Ciudad: ${city}
+🏠 Dirección: ${address}${notes ? '\n📝 Indicaciones: ' + notes : ''}
+💳 Método de pago: ${payMethod === 'cod' ? 'Contra entrega' : 'Tarjeta'}
+
+📦 Productos:
+${itemsText}
+
+💰 TOTAL: ${fp(total)}`;
+
+    el('coSuccessOrder').textContent = `Pedido de ${name} · ${fp(total)}`;
+
+    // Descontar stock en Supabase
+    await descontarStockPedido(cart);
+
+    // Vaciar carrito
+    cart = []; nextId = 0;
+    renderCart(); updateStickyCart();
+
+    // Paso 3
+    goStep(3);
+
+    // Email vía Web3Forms (no bloquea UI)
+    try {
+      await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          access_key: '879c70d5-484f-43fc-914d-5161d2eaa7b9',
+          subject: '🛒 Nuevo pedido Arca Vapes — ' + name,
+          from_name: 'Arca Vapes Web',
+          'Cliente': name,
+          'Teléfono': phone,
+          'Ciudad': city || '—',
+          'Dirección': address,
+          'Indicaciones': notes || '—',
+          'Método de pago': payMethod === 'cod' ? 'Contra entrega' : 'Tarjeta',
+          'Productos': itemsText,
+          'TOTAL': fp(total)
+        })
+      });
+    } catch(e) { console.warn('Email no enviado:', e); }
+  }
+
+  // ── Bold Payment ────────────────────
+  const BOLD_API_KEY    = 'l3XcCsp7Tqjah-CpqekpnN-n9UGhMomvErwZs0sc9qI';
+  const BOLD_SECRET_KEY = 'ZUR02j6ODUQRkaFGlN_taQ';
+
+  async function boldHash(orderId, amount, currency) {
+    const str = `${orderId}${amount}${currency}${BOLD_SECRET_KEY}`;
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+  }
+
+  async function openBoldCheckout() {
+    const name    = el('coName').value.trim();
+    const phone   = el('coPhone').value.trim();
+    const city    = el('coCity').value.trim();
+    const address = el('coAddress').value.trim();
+    const notes   = el('coNotes').value.trim();
+
+    const productTotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    const addDelivery  = false; // Envío gratis incluido en precio
+    const total        = productTotal + (addDelivery ? 12000 : 0);
+
+    const orderId  = 'ARCA-' + Date.now();
+    const currency = 'COP';
+    const hash     = await boldHash(orderId, total, currency);
+
+    const itemsText = cart.map(i =>
+      `${i.flavor} (${i.brand}) × ${i.qty} = ${fp(i.price * i.qty)}`
+    ).join(', ') + ' + 🎁 TMT Floyd 15k GRATIS';
+
+    const description = `Arca Vapes — ${cart.map(i=>i.flavor).join(', ')}`.substring(0, 100);
+
+    const checkout = new window.BoldCheckout({
+      orderId:            orderId,
+      currency:           currency,
+      amount:             String(total),
+      apiKey:             BOLD_API_KEY,
+      integritySignature: hash,
+      description:        description,
+      redirectionUrl:     'https://arcavapes.com',
+      customerData: JSON.stringify({
+        fullName:  name,
+        phone:     phone,
+        dialCode:  '+57'
+      }),
+      billingAddress: JSON.stringify({
+        address: address,
+        city:    city,
+        country: 'CO'
+      }),
+      extraData1: notes || '',
+      extraData2: itemsText.substring(0, 60)
+    });
+
+    // Guardar pedido en sessionStorage (sobrevive la redirección de Bold)
+    const orderData = { name, phone, city, address, notes, total, itemsText, orderId,
+                        cartSnapshot: JSON.stringify(cart) };
+    sessionStorage.setItem('boldPendingOrder', JSON.stringify(orderData));
+    window._pendingOrder = orderData;
+
+    checkout.open();
+  }
+
+  // ── Age Gate ────────────────────
+  function confirmAge() {
+    sessionStorage.setItem('age-ok', '1');
+    const gate = el('age-gate');
+    if (gate) gate.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  function denyAge() {
+    window.location.href = 'https://www.google.com';
+  }
+
+  // ── Reveal animation ────────────
+  function initReveal() {
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal').forEach(r => obs.observe(r));
+  }
+
+  // ══════════════════════════════════════════════════════════
+  // PARTÍCULAS — vapor fino que sube y se repele del cursor
+  // ══════════════════════════════════════════════════════════
+  (function(){
+    const cv  = document.getElementById('cv-particles');
+    if (!cv) return;
+    const ctx = cv.getContext('2d');
+    let W, H, pts = [];
+    let mx = 0, my = 0;
+
+    function resize() { W = cv.width = window.innerWidth; H = cv.height = window.innerHeight; }
+    resize();
+    window.addEventListener('resize', () => { resize(); initPts(); });
+    window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+
+    const isMob = () => window.innerWidth < 768;
+
+    class Pt {
+      reset(full) {
+        this.x   = Math.random() * W;
+        this.y   = full ? Math.random() * H : H + 8;
+        this.r   = Math.random() * 1.4 + 0.2;
+        this.vy  = -(Math.random() * 0.55 + 0.18);
+        this.vx  = (Math.random() - 0.5) * 0.28;
+        this.op  = Math.random() * 0.32 + 0.08;
+        this.phi = Math.random() * Math.PI * 2;
+        this.fps = Math.random() * 0.006 + 0.002;
+      }
+      constructor() { this.reset(true); }
+      tick() {
+        // repulsión suave del cursor
+        const dx = this.x - mx, dy = this.y - my;
+        const d2 = dx*dx + dy*dy;
+        if (d2 < 12000 && d2 > 0) {
+          const f = 0.14 / Math.sqrt(d2);
+          this.x += dx * f; this.y += dy * f;
+        }
+        this.x += this.vx; this.y += this.vy;
+        this.phi += this.fps;
+        if (this.y < -6 || this.x < -20 || this.x > W + 20) this.reset(false);
+      }
+      draw() {
+        const a = this.op + Math.sin(this.phi) * 0.045;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,255,${Math.max(0, a)})`;
+        ctx.fill();
+      }
+    }
+
+    function initPts() { const n = isMob() ? 45 : 100; pts = Array.from({length: n}, () => new Pt()); }
+    initPts();
+
+    function frame() {
+      ctx.clearRect(0, 0, W, H);
+      pts.forEach(p => { p.tick(); p.draw(); });
+      requestAnimationFrame(frame);
+    }
+    frame();
+  })();
+
+  // ══════════════════════════════════════════════════════════
+  // CURSOR PERSONALIZADO — solo dispositivos con mouse real
+  // ══════════════════════════════════════════════════════════
+  (function(){
+    const dot  = document.getElementById('cur-dot');
+    const ring = document.getElementById('cur-ring');
+    if (!dot || !ring) return;
+    // Solo activar si el dispositivo tiene hover (mouse real)
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+
+    let rx = 0, ry = 0, tx = 0, ty = 0;
+
+    document.addEventListener('mousemove', e => {
+      tx = e.clientX; ty = e.clientY;
+      dot.style.left = tx + 'px'; dot.style.top = ty + 'px';
+    });
+    document.addEventListener('mouseleave', () => ring.classList.add('away'));
+    document.addEventListener('mouseenter', () => ring.classList.remove('away'));
+
+    document.querySelectorAll('a, button, .product-card, .ch-card, [data-tilt]').forEach(el => {
+      el.addEventListener('mouseenter', () => ring.classList.add('big'));
+      el.addEventListener('mouseleave', () => ring.classList.remove('big'));
+    });
+
+    (function animCursor() {
+      rx += (tx - rx) * 0.13; ry += (ty - ry) * 0.13;
+      ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+      requestAnimationFrame(animCursor);
+    })();
+  })();
+
+  // ══════════════════════════════════════════════════════════
+  // HERO PARALLAX — title sigue el mouse suavemente
+  // ══════════════════════════════════════════════════════════
+  (function(){
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+    const title = document.getElementById('heroTitle');
+    if (!title) return;
+    let cx = 0, cy = 0, tx = 0, ty = 0;
+    document.addEventListener('mousemove', e => {
+      tx = (e.clientX / window.innerWidth  - 0.5) * 14;
+      ty = (e.clientY / window.innerHeight - 0.5) *  8;
+    });
+    (function loop() {
+      cx += (tx - cx) * 0.065; cy += (ty - cy) * 0.065;
+      title.style.transform = `translate(${cx}px, ${cy}px)`;
+      requestAnimationFrame(loop);
+    })();
+  })();
+
+  // ══════════════════════════════════════════════════════════
+  // 3D TILT EN TARJETAS — solo desktop con mouse
+  // ══════════════════════════════════════════════════════════
+  (function(){
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+    const MAX = 5;
+    document.querySelectorAll('.product-card').forEach(card => {
+      let cr = 0, cp = 0, tr = 0, tp = 0, raf;
+      card.addEventListener('mousemove', e => {
+          const b = card.getBoundingClientRect();
+        const x = (e.clientX - b.left) / b.width;
+        const y = (e.clientY - b.top)  / b.height;
+        tr = (y - 0.5) * -MAX * 2;
+        tp = (x - 0.5) *  MAX * 2;
+        card.style.setProperty('--cx', `${x * 100}%`);
+        card.style.setProperty('--cy', `${y * 100}%`);
+      });
+      card.addEventListener('mouseenter', () => {
+        cancelAnimationFrame(raf);
+        (function step() {
+          cr += (tr - cr) * 0.1; cp += (tp - cp) * 0.1;
+          card.style.transform = `perspective(900px) rotateX(${cr}deg) rotateY(${cp}deg) translateY(-8px)`;
+          card.style.zIndex = '2';
+          raf = requestAnimationFrame(step);
+        })();
+      });
+      card.addEventListener('mouseleave', () => {
+        cancelAnimationFrame(raf);
+        tr = 0; tp = 0;
+        (function ease() {
+          cr += -cr * 0.12; cp += -cp * 0.12;
+          card.style.transform = `perspective(900px) rotateX(${cr}deg) rotateY(${cp}deg)`;
+          if (Math.abs(cr) < 0.05 && Math.abs(cp) < 0.05) {
+            card.style.transform = ''; card.style.zIndex = '';
+          } else { raf = requestAnimationFrame(ease); }
+        })();
+      });
+    });
+  })();
+
+  // ── Product Detail Modal ────────────────────────────────────
+  const BRAND_META = {
+    'Humo Azul': {
+      puffs: '24.000 puffs',
+      nicotina: '5% (50mg)',
+      bateria: 'USB-C recargable',
+      coil: 'Mesh coil',
+      features: ['Diseño tipo porcelana', 'Mesh coil', 'USB-C', '5% nicotina', 'Sabor consistente']
+    },
+    'Wefume': {
+      puffs: '30.000 puffs',
+      nicotina: '5% (50mg)',
+      bateria: 'USB-C recargable',
+      coil: 'Pantalla táctil',
+      features: ['Bocina integrada', 'Micrófono', 'Calculadora', 'Pantalla táctil', 'USB-C']
+    },
+    'Upload': {
+      puffs: '25.000 puffs',
+      nicotina: '5% (50mg)',
+      bateria: 'USB-C recargable',
+      coil: 'Pantalla fotos',
+      features: ['Pantalla personalizable', 'Fotos propias', 'USB-C', '5% nicotina']
+    },
+    'Hookalit': {
+      puffs: '35.000 puffs',
+      nicotina: '5% (50mg)',
+      bateria: 'USB-C recargable',
+      coil: 'Nubes densas',
+      features: ['35k puffs (más del catálogo)', 'Nubes densas', 'Estilo hookah', 'USB-C', '5% nicotina']
+    },
+    'Eternity': {
+      puffs: '20.000 puffs',
+      nicotina: '5% (50mg)',
+      bateria: 'USB-C recargable',
+      coil: 'Doble mesh coil',
+      features: ['Pantalla HD (batería + líquido)', 'Modo Regular 20k / Pulse', 'Doble mesh coil', 'USB-C', '5% nicotina']
+    },
+    'Crypto Vibe': {
+      puffs: '30.000 puffs',
+      nicotina: '2% (20mg)',
+      bateria: 'USB-C recargable',
+      coil: 'Mesh coil',
+      features: ['QR con posibilidad de ganar BTC', 'Diseño metalizado premium', '30k puffs', 'Mesh coil', '2% nicotina']
+    }
+  };
+
+  function initProductModal() {
+    const overlay  = document.getElementById('pdOverlay');
+    const closeBtn = document.getElementById('pdClose');
+    if (!overlay || !closeBtn) return;
+
+    const waBtn = document.querySelector('.wa-float');
+    let currentAddFn = null;
+
+    function openPdModal() {
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      if (waBtn) waBtn.classList.add('wa-hidden');
+    }
+
+    function closePdModal() {
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+      if (waBtn) waBtn.classList.remove('wa-hidden');
+      currentAddFn = null;
+    }
+
+    closeBtn.addEventListener('click', closePdModal);
+    overlay.addEventListener('click', function(e) {
+      if (e.target === overlay) closePdModal();
+    });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && overlay.classList.contains('open')) closePdModal();
+    });
+
+    document.querySelectorAll('.product-card').forEach(card => {
+      card.addEventListener('click', function(e) {
+        if (e.target.closest('.btn-add') || e.target.closest('.card-add')) return;
+        if (card.classList.contains('out-of-stock')) return;
+
+        const img      = card.querySelector('img');
+        const flavorEl = card.querySelector('.card-flavor');
+        const brandEl  = card.querySelector('.card-brand');
+        const descEl   = card.querySelector('.card-desc');
+        const addBtn   = card.querySelector('.btn-add');
+        const priceEl  = card.querySelector('.card-add span');
+        const stockEl  = card.querySelector('.card-stock:not(.low)');
+        const lowEl    = card.querySelector('.card-stock.low');
+
+        const flavor    = flavorEl  ? flavorEl.textContent.trim()  : '';
+        const brandFull = brandEl   ? brandEl.textContent.trim()   : '';
+        const desc      = descEl    ? descEl.textContent.trim()    : '';
+        const imgSrc    = img       ? img.src                      : '';
+        const imgAlt    = img       ? img.alt                      : '';
+        const priceText = priceEl   ? priceEl.textContent.trim()   : '';
+        const stockText = stockEl   ? stockEl.textContent.trim()   : '';
+        const isLow     = !!lowEl;
+        const lowText   = lowEl     ? lowEl.textContent.trim()     : '';
+
+        const brandName = brandFull.split('·')[0].trim();
+        const meta = BRAND_META[brandName] || {};
+
+        // Populate modal
+        const pdImg = document.getElementById('pd-img');
+        if (pdImg) { pdImg.src = imgSrc; pdImg.alt = imgAlt; }
+
+        const pdBrand = document.getElementById('pd-brand');
+        if (pdBrand) pdBrand.textContent = brandFull;
+
+        const pdFlavor = document.getElementById('pd-flavor');
+        if (pdFlavor) pdFlavor.textContent = flavor;
+
+        const pdDesc = document.getElementById('pd-desc');
+        if (pdDesc) pdDesc.textContent = desc || '';
+
+        // Specs grid
+        const pdSpecs = document.getElementById('pd-specs');
+        if (pdSpecs && meta.puffs) {
+          pdSpecs.innerHTML = `
+            <div class="pd-spec"><div class="pd-spec-label">Puffs</div><div class="pd-spec-value">${meta.puffs}</div></div>
+            <div class="pd-spec"><div class="pd-spec-label">Nicotina</div><div class="pd-spec-value">${meta.nicotina || '—'}</div></div>
+            <div class="pd-spec"><div class="pd-spec-label">Batería</div><div class="pd-spec-value">${meta.bateria || '—'}</div></div>
+            <div class="pd-spec"><div class="pd-spec-label">Tecnología</div><div class="pd-spec-value">${meta.coil || '—'}</div></div>
+          `;
+        } else if (pdSpecs) {
+          pdSpecs.innerHTML = '';
+        }
+
+        // Features
+        const pdFeatures = document.getElementById('pd-features');
+        if (pdFeatures && meta.features && meta.features.length) {
+          pdFeatures.innerHTML = meta.features.map(f => `<span class="pd-feat-tag">${f}</span>`).join('');
+        } else if (pdFeatures) {
+          pdFeatures.innerHTML = '';
+        }
+
+        // Footer: price + stock + add button
+        const pdFooter = document.querySelector('.pd-footer');
+        if (pdFooter) {
+          const stockBadge = isLow
+            ? `<span class="pd-stock-badge low">${lowText}</span>`
+            : (stockText ? `<span class="pd-stock-badge">${stockText}</span>` : '');
+
+          const addOnclick = addBtn ? addBtn.getAttribute('onclick') : '';
+          pdFooter.innerHTML = `
+            <div>
+              <div class="pd-price">${priceText}</div>
+              ${stockBadge}
+            </div>
+            <button class="pd-add-btn" id="pd-add-btn">+ Agregar</button>
+          `;
+
+          const pdAddBtn = document.getElementById('pd-add-btn');
+          if (pdAddBtn && addOnclick) {
+            pdAddBtn.addEventListener('click', function() {
+              if (addBtn) addBtn.click();
+              closePdModal();
+            });
+          }
+        }
+
+        openPdModal();
+      });
+    });
+  }
+
+  initProductModal();
+  initReveal();
+
+  // Checkout: wiring de todos los botones
+  document.addEventListener('DOMContentLoaded', function() {
+
+    // X cierra el checkout
+    var coCloseBtn = el('coCloseBtn');
+    if (coCloseBtn) coCloseBtn.addEventListener('click', closeCheckout);
+
+    // ESC cierra checkout
+    document.addEventListener('keydown', function(e) {
+      if (e.key !== 'Escape') return;
+      var modal = el('checkoutModal');
+      if (modal && modal.classList.contains('open')) { closeCheckout(); return; }
+    });
+
+    // Click fuera del modal lo cierra
+    var coOverlay = el('checkoutModal');
+    if (coOverlay) {
+      coOverlay.addEventListener('click', function(e) {
+        if (e.target === coOverlay) closeCheckout();
+      });
+      var coModal = coOverlay.querySelector('.co-modal');
+      if (coModal) coModal.addEventListener('click', function(e) { e.stopPropagation(); });
+    }
+
+    // Opciones de pago
+    var payCod  = el('pay-cod');
+    var payCard = el('pay-card');
+    function isBogota() {
+      var city = el('coCity') ? el('coCity').value.trim().toLowerCase() : '';
+      return city.includes('bogot') || city.includes('bta');
+    }
+    function selectPay(method) {
+      payMethod = method;
+      if (payCod)  payCod.classList.toggle('selected',  method === 'cod');
+      if (payCard) payCard.classList.toggle('selected', method === 'card');
+      var bogota = isBogota();
+      var cardBogota   = el('coCardBogota');
+      var cardNacional = el('coCardNacional');
+      if (cardBogota)   cardBogota.style.display   = bogota  ? '' : 'none';
+      if (cardNacional) cardNacional.style.display = !bogota ? '' : 'none';
+    }
+    if (payCod)  payCod.addEventListener('click',  function() { selectPay('cod'); });
+    if (payCard) payCard.addEventListener('click', function() { selectPay('card'); });
+    // Re-evaluar info tarjeta cuando cambia ciudad
+    var coCityInput = el('coCity');
+    if (coCityInput) coCityInput.addEventListener('input', function() {
+      selectPay(payMethod);
+    });
+    selectPay('cod');
+
+    // Step 1 continuar
+    var coStep1Btn = el('coStep1Btn');
+    if (coStep1Btn) coStep1Btn.addEventListener('click', function() {
+      var name    = el('coName')    ? el('coName').value.trim()    : '';
+      var phone   = el('coPhone')   ? el('coPhone').value.trim()   : '';
+      var address = el('coAddress') ? el('coAddress').value.trim() : '';
+      if (!name || !phone || !address) {
+        showToast('Completa nombre, telefono y direccion');
+        return;
+      }
+      buildSummary();
+      goStep(2);
+    });
+
+    // Step 2 volver
+    var coBackBtn = el('coBackBtn');
+    if (coBackBtn) coBackBtn.addEventListener('click', function() { goStep(1); });
+
+    // Confirmar pedido
+    var coConfirmBtn = el('coConfirmBtn');
+    if (coConfirmBtn) coConfirmBtn.addEventListener('click', function() {
+      if (payMethod === 'card') {
+        openBoldCheckout();
+      } else {
+        submitOrder();
+      }
+    });
+
+    // Boton exito
+    var coSuccessBtn = el('coSuccessBtn');
+    if (coSuccessBtn) coSuccessBtn.addEventListener('click', function() {
+      closeCheckout();
+      cart = [];
+      renderCart();
+      updateStickyCart();
+    });
+  });
+
+  // ── Bold: detectar retorno tras pago aprobado ────────────────────
+  (function() {
+    var params = new URLSearchParams(window.location.search);
+    var boldOrderId = params.get('bold-order-id');
+    var boldStatus  = params.get('bold-tx-status');
+    if (boldOrderId && boldStatus === 'approved') {
+      // Limpiar URL sin recargar
+      window.history.replaceState({}, document.title, window.location.pathname);
+      // Leer pedido de sessionStorage (sobrevive la redirección)
+      var order = window._pendingOrder;
+      try {
+        var stored = sessionStorage.getItem('boldPendingOrder');
+        if (stored) { order = JSON.parse(stored); sessionStorage.removeItem('boldPendingOrder'); }
+      } catch(e) {}
+      if (order) {
+        var itemsText = order.itemsText;
+
+        // Restaurar carrito desde snapshot para descontar stock correctamente
+        try {
+          var snap = JSON.parse(order.cartSnapshot || '[]');
+          if (snap.length) { descontarStockPedido(snap); }
+        } catch(e) { descontarStockPedido(cart); }
+
+        cart = []; nextId = 0;
+        renderCart(); updateStickyCart();
+
+        try {
+          fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify({
+              access_key: '879c70d5-484f-43fc-914d-5161d2eaa7b9',
+              subject: '🛒 PAGO CON TARJETA — Arca Vapes — ' + order.name,
+              from_name: 'Arca Vapes Web',
+              'Cliente': order.name,
+              'Teléfono': order.phone,
+              'Ciudad': order.city || '—',
+              'Dirección': order.address,
+              'Indicaciones': order.notes || '—',
+              'Método de pago': 'Tarjeta (Bold) ✅',
+              'Bold Order ID': boldOrderId,
+              'Productos': itemsText,
+              'TOTAL': fp(order.total)
+            })
+          });
+        } catch(e) {}
+        window._pendingOrder = null;
+      }
+      // Mostrar confirmación
+      showToast('✅ ¡Pago aprobado! Tu pedido ya está confirmado 🎉');
+    }
+  })();
+
+  // Image lazy-load fade-in
+  (function() {
+    var fadeIn = function(img) {
+      requestAnimationFrame(function() {
+        requestAnimationFrame(function() { img.classList.add('img-loaded'); });
+      });
+    };
+    document.querySelectorAll('.product-card img[loading="lazy"]').forEach(function(img) {
+      if (img.complete && img.naturalWidth > 0) {
+        fadeIn(img);
+      } else {
+        img.addEventListener('load',  function() { fadeIn(img); }, { once: true });
+        img.addEventListener('error', function() { fadeIn(img); }, { once: true });
+      }
+    });
+  })();
+
+</script>
+
+</body>
+</html>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
